@@ -1,10 +1,8 @@
-import Models.Article;
+import Models.Electronics;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello World");
-        Article article = new Article();
-        article.setProductId(1);
-        System.out.println(article.getProductId());
+        Electronics e = new Electronics(0, "Waschmaschine", 239.99, "Bosch", "Tolle Waschmashcine", 15, 5, "Model 1", 1350, "50x50x50cm");
+        System.out.println(e);
     }
 }
