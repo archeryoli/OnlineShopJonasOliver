@@ -1,14 +1,20 @@
 import Models.*;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
 
         User u1 = new User(1, "Jonas", "Kirchmair", LocalDate.of(2005, 05, 06), Gender.male, "jonas1.kirchmair@gmail.com", "hallo1234", null, null);
         System.out.println(u1);
+
 
 
         List<Address> addresses = new ArrayList<Address>();
@@ -32,5 +38,21 @@ public class Main {
         System.out.println(c);
         Article b = new Book(2, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag");
         System.out.println(b);
+
+        Basket basket = new Basket();
+        u1.setBasket(basket);
+        u1.getBasket().addBasketHashMapEntry(e, 2);
+        System.out.println();
+        System.out.println(u1);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(basket);
+        System.out.printf("JSON: %s", json);
+
+        Basket basket2 = gson.fromJson(json, Basket.class);
+        System.out.println();
+        System.out.println(basket2);
+
+
     }
 }
