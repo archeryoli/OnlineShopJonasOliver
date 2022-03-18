@@ -130,6 +130,6 @@ public class Address {
     }
 
     public String toString() {
-        return "Address(_addressId=" + this.getAddressId() + ", _state=" + this.getState() + ", _postalcode=" + this.getPostalcode() + ", _city=" + this.getCity() + ", _street=" + this.getStreet() + ", _streetNr=" + this.get_streetNr() + ")";
+        return "\n(_addressId=" + this.getAddressId() + ", _state=" + this.getState() + ", _postalcode=" + this.getPostalcode() + ", _city=" + this.getCity() + ", _street=" + this.getStreet() + ", _streetNr=" + this.get_streetNr() + ")";
     }
 }
