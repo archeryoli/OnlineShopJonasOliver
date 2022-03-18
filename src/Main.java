@@ -32,5 +32,8 @@ public class Main {
         System.out.println(c);
         Article b = new Book(2, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag");
         System.out.println(b);
+
+
+        
     }
 }
