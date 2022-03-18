@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Basket {
     private int _basketId;
-    private HashMap<Article, Integer> _basketHashMap;
+    private HashMap<Article, Integer> _basketHashMap = new HashMap<>();
 
     public Basket() {
     }
