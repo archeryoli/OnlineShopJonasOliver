@@ -8,6 +8,8 @@ public class Main {
 
         Address a = new Address(0, "Österriech", "6063", "Rum", "Erlenweg", "6");
         System.out.println(c);
+        System.out.println();
+        System.out.println(a);
         Book b = new Book("123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag");
         System.out.println(b);
     }
