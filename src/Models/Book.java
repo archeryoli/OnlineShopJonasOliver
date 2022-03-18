@@ -1,6 +1,6 @@
 package Models;
 
-public class Book {
+public class Book extends Article{
 
     private String _bookISBNR;
     private String _title;
@@ -9,10 +9,12 @@ public class Book {
     private String _bookPublisher;
 
     public Book(){
-        this("", "", "", 0, "");
+        this(0, "", 0.0, "", "", 0.0, 0, "", "", "", 0, "");
     }
 
-    public Book(String _bookISBNR, String _title, String _bookAuthor, int _bookPages, String _bookPublisher) {
+    public Book(int productId, String productName, double productPrice, String productBrand, String productDescription, double productWeight, int productStockCount,
+                String _bookISBNR, String _title, String _bookAuthor, int _bookPages, String _bookPublisher) {
+        super(productId, productName, productPrice, productBrand, productDescription, productWeight, productStockCount);
         this.setBookISBNR(_bookISBNR);
         this.setTitle(_title);
         this.setBookAuthor(_bookAuthor);
@@ -119,6 +121,6 @@ public class Book {
     }
 
     public String toString() {
-        return "Book(_bookISBNR=" + this.getBookISBNR() + ", _title=" + this.getTitle() + ", _bookAuthor=" + this.getBookAuthor() + ", _bookPages=" + this.getBookpages() + ", _bookPublisher=" + this.getBookPublisher() + ")";
+        return "Book(" + super.toString() + "_bookISBNR=" + this.getBookISBNR() + ", _title=" + this.getTitle() + ", _bookAuthor=" + this.getBookAuthor() + ", _bookPages=" + this.getBookpages() + ", _bookPublisher=" + this.getBookPublisher() + ")";
     }
 }
