@@ -26,7 +26,7 @@ public class User {
         this.setGender(gender);
         this.setEmail(email);
         this.setPassword(password);
-        this.set_addresses(addresses);
+        this.setAddresses(addresses);
         this.setBasket(basket);
     }
 
