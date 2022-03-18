@@ -3,16 +3,18 @@ package Models;
 public class Book {
 
     private String _bookISBNR;
+    private String _title;
     private String _bookAuthor;
-    private String _bookPages;
+    private int _bookPages;
     private String _bookPublisher;
 
     public Book(){
-        this("", "", "", "");
+        this("", "", "", 0, "");
     }
 
-    public Book(String _bookISBNR, String _bookAuthor, String _bookPages, String _bookPublisher) {
+    public Book(String _bookISBNR, String _title, String _bookAuthor, int _bookPages, String _bookPublisher) {
         this.setBookISBNR(_bookISBNR);
+        this.setTitle(_title);
         this.setBookAuthor(_bookAuthor);
         this.setBookPages(_bookPages);
         this.setBookPublisher(_bookPublisher);
@@ -23,11 +25,15 @@ public class Book {
         return this._bookISBNR;
     }
 
+    public String getTitle() {
+        return this._title;
+    }
+
     public String getBookAuthor() {
         return this._bookAuthor;
     }
 
-    public String getBookPages() {
+    public int getBookpages() {
         return this._bookPages;
     }
 
@@ -41,14 +47,20 @@ public class Book {
         }
     }
 
+    public void setTitle(String _title) {
+        if(!(_title.isEmpty())) {
+            this._title = _title;
+        }
+    }
+
     public void setBookAuthor(String _bookAuthor) {
         if(!(_bookAuthor.isEmpty())) {
             this._bookAuthor = _bookAuthor;
         }
     }
 
-    public void setBookPages(String _bookPages) {
-        if (!(_bookPages.isEmpty())){
+    public void setBookPages(int _bookPages) {
+        if(_bookPages > 0) {
             this._bookPages = _bookPages;
         }
     }
@@ -68,12 +80,15 @@ public class Book {
         final Object other$_bookISBNR = other.getBookISBNR();
         if (this$_bookISBNR == null ? other$_bookISBNR != null : !this$_bookISBNR.equals(other$_bookISBNR))
             return false;
+        final Object this$_title = this.getTitle();
+        final Object other$_title = other.getTitle();
+        if (this$_title == null ? other$_title != null : !this$_title.equals(other$_title)) return false;
         final Object this$_bookAuthor = this.getBookAuthor();
         final Object other$_bookAuthor = other.getBookAuthor();
         if (this$_bookAuthor == null ? other$_bookAuthor != null : !this$_bookAuthor.equals(other$_bookAuthor))
             return false;
-        final Object this$_bookPages = this.getBookPages();
-        final Object other$_bookPages = other.getBookPages();
+        final Object this$_bookPages = this.getBookpages();
+        final Object other$_bookPages = other.getBookpages();
         if (this$_bookPages == null ? other$_bookPages != null : !this$_bookPages.equals(other$_bookPages))
             return false;
         final Object this$_bookPublisher = this.getBookPublisher();
@@ -92,9 +107,11 @@ public class Book {
         int result = 1;
         final Object $_bookISBNR = this.getBookISBNR();
         result = result * PRIME + ($_bookISBNR == null ? 43 : $_bookISBNR.hashCode());
+        final Object $_title = this.getTitle();
+        result = result * PRIME + ($_title == null ? 43 : $_title.hashCode());
         final Object $_bookAuthor = this.getBookAuthor();
         result = result * PRIME + ($_bookAuthor == null ? 43 : $_bookAuthor.hashCode());
-        final Object $_bookPages = this.getBookPages();
+        final Object $_bookPages = this.getBookpages();
         result = result * PRIME + ($_bookPages == null ? 43 : $_bookPages.hashCode());
         final Object $_bookPublisher = this.getBookPublisher();
         result = result * PRIME + ($_bookPublisher == null ? 43 : $_bookPublisher.hashCode());
@@ -102,6 +119,6 @@ public class Book {
     }
 
     public String toString() {
-        return "Book(_bookISBNR=" + this.getBookISBNR() + ", _bookAuthor=" + this.getBookAuthor() + ", _bookPages=" + this.getBookPages() + ", _bookPublisher=" + this.getBookPublisher() + ")";
+        return "Book(_bookISBNR=" + this.getBookISBNR() + ", _title=" + this.getTitle() + ", _bookAuthor=" + this.getBookAuthor() + ", _bookPages=" + this.getBookpages() + ", _bookPublisher=" + this.getBookPublisher() + ")";
     }
 }
