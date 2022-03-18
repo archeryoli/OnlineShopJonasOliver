@@ -107,6 +107,9 @@ public class User {
         }
     }
     public void setAddresses(List<Address> addresses){
+        if(addresses == null){
+            return;
+        }
         for(Address a: addresses){
             this._addresses.add(a);
         }
