@@ -1,8 +1,13 @@
+import Json.JsonReader;
+import Json.JsonWriter;
 import Models.*;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,16 +47,28 @@ public class Main {
         Basket basket = new Basket();
         u1.setBasket(basket);
         u1.getBasket().addBasketHashMapEntry(e, 2);
+        u1.getBasket().addBasketHashMapEntry(c, 3);
         System.out.println();
         System.out.println(u1);
 
-        Gson gson = new Gson();
+        RuntimeTypeAdapterFactory<Article> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory
+                .of(Article.class,"type")
+                .registerSubtype(Electronics.class, "Electronics")
+                .registerSubtype(Clothing.class, "Clothing")
+                .registerSubtype(Book.class, "Book");
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapterFactory(runtimeTypeAdapterFactory).create();
         String json = gson.toJson(basket);
-        System.out.printf("JSON: %s", json);
+        System.out.printf("JSON: %s \n", json);
 
-        Basket basket2 = gson.fromJson(json, Basket.class);
+        JsonWriter.writeObjectToJson(basket, Path.of("basket.json"));
+
+
+        Basket basket2 = JsonReader.getObjectFromFile(Path.of("basket.json"));
         System.out.println();
         System.out.println(basket2);
+        System.out.println(basket);
+
+
 
 
     }

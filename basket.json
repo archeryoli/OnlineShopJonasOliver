@@ -1,0 +1,38 @@
+{
+  "_basketId": 0,
+  "_basketHashMap": [
+    [
+      {
+        "type": "Clothing",
+        "_clothingType": "HODDIE",
+        "_clothingColor": "Schwarz/Black",
+        "_clothingSize": 172,
+        "_clothingFabric": "Baumwolle",
+        "_productId": 1,
+        "_productName": "Pullover Fantastico",
+        "_productPrice": 420.69,
+        "_productBrand": "Fantastico Luis Vitton",
+        "_productDescription": "Toller Pullover bitte kaufen",
+        "_productWeight": 0.3,
+        "_productStockCount": 42
+      },
+      3
+    ],
+    [
+      {
+        "type": "Electronics",
+        "_electronicsModel": "XYZA12Z34",
+        "_electronicsWattage": 1500.0,
+        "_electronicsDimensions": "50x50x50",
+        "_productId": 0,
+        "_productName": "Waschmaschine",
+        "_productPrice": 110.99,
+        "_productBrand": "Bosch",
+        "_productDescription": "ProductTest",
+        "_productWeight": 1.5,
+        "_productStockCount": 5
+      },
+      2
+    ]
+  ]
+}
