@@ -1,14 +1,16 @@
 import Json.JsonReader;
 import Json.JsonWriter;
 import Models.*;
+import Models.DB.IRepositoryOnlineshop;
+import Models.DB.RepositoryOnlineshopDB;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.internal.bind.util.ISO8601Utils;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -42,6 +44,7 @@ public class Main {
         Address a1 = new Address(1, "Österreich", "6063", "Rum", "Erlenweg", "6");
         Address a2 = new Address(2, "Österreich", "6235", "Reith im Alpbachtal", "Hygna", "24");
         Address a3 = new Address(3, "Österreich", "6020", "Innsbruck", "Anichstraße", "13b");
+        Address a4 = new Address(4, "Österreich", "6040", "Hall", "Oberer Stadtplatz", "5");
 
         addresses.add(a1);
         addresses.add(a2);
@@ -52,6 +55,14 @@ public class Main {
 
          */
 
+        // Fehler da abstract
+        //Article a = new Article(0, "Neues Product", 110.99, "TestFirma", "ProductTest", 1.5, 5);
+        Article e = new Electronics(0, "Waschmaschine", 110.99, "Bosch", "ProductTest", 1.5, 5, "XYZA12Z34", 1500, "50x50x50");
+        System.out.println(e);
+        Article c = new Clothing(1, "Pullover Fantastico", 420.69, "Fantastico Luis Vitton", "Toller Pullover bitte kaufen", 0.3, 42, ClothingType.HODDIE, "Schwarz/Black", 172, "Baumwolle");
+        System.out.println(c);
+        Article b = new Book(2, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag");
+        System.out.println(b);
 
     }
     private static void init(){
@@ -85,12 +96,20 @@ public class Main {
     private static void registerUser(){
         sc = new Scanner(System.in);
         User registeredUser = new User();
+        try{
+            rep= new RepositoryOnlineshopDB();
 
+            rep.open();
         System.out.println("Schön, Sie als neuen Nutzer gewonnen zu haben!");
 
+            User u2 = new User(2, "Julia", "Biechl", LocalDate.of(2005, 9, 1), Gender.f, "j.b@gmail.com", "12345678", null, null);
+            rep.insertUser(u2, a4);
         System.out.print("Bitte geben Sie ihre Email ein >>> ");
         registeredUser.setEmail(sc.nextLine());
 
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
         System.out.print("Bitte geben Sie Ihren Vornamen ein >>> ");
         registeredUser.setFirstname(sc.nextLine());
 

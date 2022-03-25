@@ -1,0 +1,39 @@
+{
+  "_userId": 1,
+  "_firstname": "Jonas",
+  "_lastname": "Kirchmair",
+  "_birthdate": {
+    "year": 2005,
+    "month": 5,
+    "day": 6
+  },
+  "_gender": "m",
+  "_email": "jonas1.kirchmair@gmail.com",
+  "_password": "hallo1234",
+  "_addresses": [
+    {
+      "_addressId": 1,
+      "_state": "Österreich",
+      "_postalcode": "6063",
+      "_city": "Rum",
+      "_street": "Erlenweg",
+      "_streetNr": "6"
+    },
+    {
+      "_addressId": 2,
+      "_state": "Österreich",
+      "_postalcode": "6235",
+      "_city": "Reith im Alpbachtal",
+      "_street": "Hygna",
+      "_streetNr": "24"
+    },
+    {
+      "_addressId": 3,
+      "_state": "Österreich",
+      "_postalcode": "6020",
+      "_city": "Innsbruck",
+      "_street": "Anichstraße",
+      "_streetNr": "13b"
+    }
+  ]
+}
