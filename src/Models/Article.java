@@ -140,6 +140,6 @@ public abstract class Article {
     }
 
     public String toString() {
-        return "Article(_productId=" + this.getProductId() + ", _productName=" + this.getProductName() + ", _productPrice=" + this.getProductPrice() + ", _productBrand=" + this.getProductBrand() + ", _productDescription=" + this.getProductDescription() + ", _productWeight=" + this.getProductWeight() + ", _productStockCount=" + this.getProductStockCount() + ")";
+        return "Article(_productId=" + this._productId + ", _productName=" + this._productName + ", _productPrice=" + this._productPrice + ", _productBrand=" + this._productBrand + ", _productDescription=" + this._productDescription + ", _productWeight=" + this._productWeight + ", _productStockCount=" + this._productStockCount + ")";
     }
 }
