@@ -1,8 +1,17 @@
 import Models.*;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,14 +54,42 @@ public class Main {
         System.out.println();
         System.out.println(u1);
 
-        Gson gson = new Gson();
-        String json = gson.toJson(basket);
-        System.out.printf("JSON: %s", json);
+        RuntimeTypeAdapterFactory<Article> runtimeTypeAdapterFactor = RuntimeTypeAdapterFactory
+                .of(Article.class, "type")
+                .registerSubtype(Electronics.class, "electronics")
+                .registerSubtype(Clothing.class, "clothing")
+                .registerSubtype(Book.class, "book");
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(runtimeTypeAdapterFactor).create();
+        String jsonBasket = "";
 
-        Basket basket2 = gson.fromJson(json, Basket.class);
-        System.out.println();
-        System.out.println(basket2);
 
 
+        HashMap<Article, Integer> bask = new HashMap<>();
+        bask.put(e, 2);
+
+        Type listType = new TypeToken<HashMap<Article, Integer>>(){}.getType();
+
+        // google: gson use HashMap with object as key
+        String json = gson.toJson(bask, listType);
+        System.out.printf("JSON: %s \n", json);
+
+        HashMap<Article, Integer> newElectronics = gson.fromJson(json, listType);
+        System.out.println(newElectronics);
+/*
+        try (Reader reader = new FileReader("basket.json")) {
+
+            // Convert JSON File to Java Object
+            Basket newBasket = gson.fromJson(json, Basket.class);
+
+            // print staff object
+            System.out.println(newBasket);
+
+        } catch (IOException err) {
+            System.out.println(err.getMessage());
+        }
+        System.out.println("Test");
+
+
+ */
     }
 }

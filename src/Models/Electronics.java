@@ -79,7 +79,11 @@ public class Electronics extends Article {
         return result;
     }
 
+
     public String toString() {
         return "Electronics(" + super.toString() + "_electronicsModel=" + this.getElectronicsModel() + ", _electronicsWattage=" + this.getElectronicsWattage() + ", _electronicsDimensions=" + this.getElectronicsDimensions() + ")";
     }
+
+
+
 }
