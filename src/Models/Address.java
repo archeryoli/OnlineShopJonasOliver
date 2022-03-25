@@ -30,7 +30,7 @@ public class Address {
         return this._street;
     }
 
-    public String get_streetNr() {
+    public String getStreetNr() {
         return this._streetNr;
     }
 
@@ -102,8 +102,8 @@ public class Address {
         final Object this$_street = this.getStreet();
         final Object other$_street = other.getStreet();
         if (this$_street == null ? other$_street != null : !this$_street.equals(other$_street)) return false;
-        final Object this$_streetNr = this.get_streetNr();
-        final Object other$_streetNr = other.get_streetNr();
+        final Object this$_streetNr = this.getStreetNr();
+        final Object other$_streetNr = other.getStreetNr();
         if (this$_streetNr == null ? other$_streetNr != null : !this$_streetNr.equals(other$_streetNr)) return false;
         return true;
     }
@@ -124,12 +124,12 @@ public class Address {
         result = result * PRIME + ($_city == null ? 43 : $_city.hashCode());
         final Object $_street = this.getStreet();
         result = result * PRIME + ($_street == null ? 43 : $_street.hashCode());
-        final Object $_streetNr = this.get_streetNr();
+        final Object $_streetNr = this.getStreetNr();
         result = result * PRIME + ($_streetNr == null ? 43 : $_streetNr.hashCode());
         return result;
     }
 
     public String toString() {
-        return "\n(_addressId=" + this.getAddressId() + ", _state=" + this.getState() + ", _postalcode=" + this.getPostalcode() + ", _city=" + this.getCity() + ", _street=" + this.getStreet() + ", _streetNr=" + this.get_streetNr() + ")";
+        return "\n(_addressId=" + this.getAddressId() + ", _state=" + this.getState() + ", _postalcode=" + this.getPostalcode() + ", _city=" + this.getCity() + ", _street=" + this.getStreet() + ", _streetNr=" + this.getStreetNr() + ")";
     }
 }
