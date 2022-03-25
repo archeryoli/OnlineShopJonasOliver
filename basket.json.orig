@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+{"_basketId":0,"_basketHashMap":{"Electronics(Article(_productId\u003d0, _productName\u003dWaschmaschine, _productPrice\u003d110.99, _productBrand\u003dBosch, _productDescription\u003dProductTest, _productWeight\u003d1.5, _productStockCount\u003d5)_electronicsModel\u003dXYZA12Z34, _electronicsWattage\u003d1500.0, _electronicsDimensions\u003d50x50x50)":2}}
+=======
 {
   "_basketId": 0,
   "_basketHashMap": [
@@ -36,3 +39,4 @@
     ]
   ]
 }
+>>>>>>> e0a3040ecf57d155748d9f93c458ae887cbf644d

@@ -1,17 +1,13 @@
+import Json.JsonReader;
+import Json.JsonWriter;
 import Models.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Type;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,43 +47,28 @@ public class Main {
         Basket basket = new Basket();
         u1.setBasket(basket);
         u1.getBasket().addBasketHashMapEntry(e, 2);
+        u1.getBasket().addBasketHashMapEntry(c, 3);
         System.out.println();
         System.out.println(u1);
 
-        RuntimeTypeAdapterFactory<Article> runtimeTypeAdapterFactor = RuntimeTypeAdapterFactory
-                .of(Article.class, "type")
-                .registerSubtype(Electronics.class, "electronics")
-                .registerSubtype(Clothing.class, "clothing")
-                .registerSubtype(Book.class, "book");
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(runtimeTypeAdapterFactor).create();
-        String jsonBasket = "";
-
-
-
-        HashMap<Article, Integer> bask = new HashMap<>();
-        bask.put(e, 2);
-
-        Type listType = new TypeToken<HashMap<Article, Integer>>(){}.getType();
-
-        // google: gson use HashMap with object as key
-        String json = gson.toJson(bask, listType);
+        RuntimeTypeAdapterFactory<Article> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory
+                .of(Article.class,"type")
+                .registerSubtype(Electronics.class, "Electronics")
+                .registerSubtype(Clothing.class, "Clothing")
+                .registerSubtype(Book.class, "Book");
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapterFactory(runtimeTypeAdapterFactory).create();
+        String json = gson.toJson(basket);
         System.out.printf("JSON: %s \n", json);
 
-        HashMap<Article, Integer> newElectronics = gson.fromJson(json, listType);
-        System.out.println(newElectronics);
-/*
-        try (Reader reader = new FileReader("basket.json")) {
+        JsonWriter.writeObjectToJson(basket, Path.of("basket.json"));
 
-            // Convert JSON File to Java Object
-            Basket newBasket = gson.fromJson(json, Basket.class);
 
-            // print staff object
-            System.out.println(newBasket);
+        Basket basket2 = JsonReader.getObjectFromFile(Path.of("basket.json"));
+        System.out.println();
+        System.out.println(basket2);
+        System.out.println(basket);
 
-        } catch (IOException err) {
-            System.out.println(err.getMessage());
-        }
-        System.out.println("Test");
+
 
 
  */

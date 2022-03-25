@@ -1,24 +1,38 @@
+import Json.JsonReader;
+import Json.JsonWriter;
 import Models.*;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+<<<<<<< HEAD
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+=======
+import com.google.gson.JsonObject;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
+
+import java.nio.file.Path;
+>>>>>>> e0a3040ecf57d155748d9f93c458ae887cbf644d
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-<<<<<<< HEAD
-        // Fehler da abstract
-        //Article a = new Article(0, "Neues Product", 110.99, "TestFirma", "ProductTest", 1.5, 5);
-        Article e = new Electronics(0, "Waschmaschine", 110.99, "Bosch", "ProductTest", 1.5, 5, "XYZA12Z34", 1500, "50x50x50");
-        System.out.println(e);
-        Article c = new Clothing(1, "Pullover Fantastico", 420.69, "Fantastico Luis Vitton", "Toller Pullover bitte kaufen", 0.3, 42, ClothingType.HODDIE, "Schwarz/Black", 172, "Baumwolle");
-        System.out.println(c);
-        Article b = new Book(2, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag");
-        System.out.println(b);
-=======
 
         User u1 = new User(1, "Jonas", "Kirchmair", LocalDate.of(2005, 05, 06), Gender.male, "jonas1.kirchmair@gmail.com", "hallo1234", null, null);
         System.out.println(u1);
+
 
 
         List<Address> addresses = new ArrayList<Address>();
@@ -34,6 +48,79 @@ public class Main {
         System.out.println(u1);
 
 
->>>>>>> c19d7bf5b28cfa58c00a76bf63eec35b86b2017a
+        // Fehler da abstract
+        //Article a = new Article(0, "Neues Product", 110.99, "TestFirma", "ProductTest", 1.5, 5);
+        Article e = new Electronics(0, "Waschmaschine", 110.99, "Bosch", "ProductTest", 1.5, 5, "XYZA12Z34", 1500, "50x50x50");
+        System.out.println(e);
+        Article c = new Clothing(1, "Pullover Fantastico", 420.69, "Fantastico Luis Vitton", "Toller Pullover bitte kaufen", 0.3, 42, ClothingType.HODDIE, "Schwarz/Black", 172, "Baumwolle");
+        System.out.println(c);
+        Article b = new Book(2, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag");
+        System.out.println(b);
+
+        Basket basket = new Basket();
+        u1.setBasket(basket);
+        u1.getBasket().addBasketHashMapEntry(e, 2);
+        u1.getBasket().addBasketHashMapEntry(c, 3);
+        System.out.println();
+        System.out.println(u1);
+
+<<<<<<< HEAD
+        RuntimeTypeAdapterFactory<Article> runtimeTypeAdapterFactor = RuntimeTypeAdapterFactory
+                .of(Article.class, "type")
+                .registerSubtype(Electronics.class, "electronics")
+                .registerSubtype(Clothing.class, "clothing")
+                .registerSubtype(Book.class, "book");
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(runtimeTypeAdapterFactor).create();
+        String jsonBasket = "";
+
+=======
+        RuntimeTypeAdapterFactory<Article> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory
+                .of(Article.class,"type")
+                .registerSubtype(Electronics.class, "Electronics")
+                .registerSubtype(Clothing.class, "Clothing")
+                .registerSubtype(Book.class, "Book");
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapterFactory(runtimeTypeAdapterFactory).create();
+        String json = gson.toJson(basket);
+        System.out.printf("JSON: %s \n", json);
+
+        JsonWriter.writeObjectToJson(basket, Path.of("basket.json"));
+
+
+        Basket basket2 = JsonReader.getObjectFromFile(Path.of("basket.json"));
+        System.out.println();
+        System.out.println(basket2);
+        System.out.println(basket);
+
+
+>>>>>>> e0a3040ecf57d155748d9f93c458ae887cbf644d
+
+
+        HashMap<Article, Integer> bask = new HashMap<>();
+        bask.put(e, 2);
+
+        Type listType = new TypeToken<HashMap<Article, Integer>>(){}.getType();
+
+        // google: gson use HashMap with object as key
+        String json = gson.toJson(bask, listType);
+        System.out.printf("JSON: %s \n", json);
+
+        HashMap<Article, Integer> newElectronics = gson.fromJson(json, listType);
+        System.out.println(newElectronics);
+/*
+        try (Reader reader = new FileReader("basket.json")) {
+
+            // Convert JSON File to Java Object
+            Basket newBasket = gson.fromJson(json, Basket.class);
+
+            // print staff object
+            System.out.println(newBasket);
+
+        } catch (IOException err) {
+            System.out.println(err.getMessage());
+        }
+        System.out.println("Test");
+
+
+ */
     }
 }
