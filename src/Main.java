@@ -88,7 +88,6 @@ public class Main {
         sc.close();
         return choice;
     }
-
     private static void registerUser(){
         sc = new Scanner(System.in);
         User registeredUser = new User();

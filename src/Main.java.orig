@@ -5,14 +5,9 @@ import Models.DB.IRepositoryOnlineshop;
 import Models.DB.RepositoryOnlineshopDB;
 
 <<<<<<< HEAD
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.internal.bind.util.ISO8601Utils;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 =======
->>>>>>> e4f663131c5ffbf18813a7890fd9ce8d1bee1325
 
+>>>>>>> 679b896bcaf92cf98712d4cb7a70dd99ceea4a92
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -22,7 +17,6 @@ public class Main {
     static Scanner sc = new Scanner(System.in);
     static List<Article> listOfAllArticles = new ArrayList<>();
     public static void main(String[] args) {
-<<<<<<< HEAD
         init();
         System.out.println("Olineshop von Jonas und Oliver");
         System.out.println("==============================");
@@ -41,10 +35,6 @@ public class Main {
         //showAllArticles();
         /*
         User u1 = new User(1, "Jonas", "Kirchmair", LocalDate.of(2005, 05, 06), Gender.male, "jonas1.kirchmair@gmail.com", "hallo1234", null, null);
-=======
-
-        User u1 = new User(1, "Jonas", "Kirchmair", LocalDate.of(2005, 05, 06), Gender.m, "jonas1.kirchmair@gmail.com", "hallo1234", null, null);
->>>>>>> e4f663131c5ffbf18813a7890fd9ce8d1bee1325
         System.out.println(u1);
 
 
@@ -64,7 +54,14 @@ public class Main {
 
          */
 
-<<<<<<< HEAD
+        // Fehler da abstract
+        //Article a = new Article(0, "Neues Product", 110.99, "TestFirma", "ProductTest", 1.5, 5);
+        Article e = new Electronics(0, "Waschmaschine", 110.99, "Bosch", "ProductTest", 1.5, 5, "XYZA12Z34", 1500, "50x50x50");
+        System.out.println(e);
+        Article c = new Clothing(1, "Pullover Fantastico", 420.69, "Fantastico Luis Vitton", "Toller Pullover bitte kaufen", 0.3, 42, ClothingType.HODDIE, "Schwarz/Black", 172, "Baumwolle");
+        System.out.println(c);
+        Article b = new Book(2, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag");
+        System.out.println(b);
 
     }
     private static void init(){
@@ -75,6 +72,8 @@ public class Main {
         listOfAllArticles.add(new Clothing(4, "Sommershirt", 23.50, "Levis", "Shirt für warme Sommertage", 0.6, 2, ClothingType.TSHIRT, "rot", 162, "Baumwolle"));
         listOfAllArticles.add(new Clothing(5, "Anzugsjeans", 65.90, "Tommy Jeans", "Für besondere Anlässe", 1.5, 5, ClothingType.JEANS, "schwarz", 36, "Baumwolle"));
         listOfAllArticles.add(new Clothing(6, "Flip Flop", 15, "", "Flip Flops für den Urlaub", 0.1, 22, ClothingType.SHOE, "grau", 42, "Kunststoff"));
+
+        IRepositoryOnlineshop rep = null;
 
         listOfAllArticles.add(new Book(7, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag"));
         listOfAllArticles.add(new Book(8, "Die Räuber", 11, "", "Oida des woa lektüre. goa koan bock", 0.5, 9, "23456", "Die Räuber", "Schiller", 175, "Hamburger Buchverlag"));
@@ -95,6 +94,7 @@ public class Main {
         sc.close();
         return choice;
     }
+
     private static void registerUser(){
         sc = new Scanner(System.in);
         User registeredUser = new User();
@@ -106,27 +106,28 @@ public class Main {
 
         System.out.print("Bitte geben Sie Ihren Vornamen ein >>> ");
         registeredUser.setFirstname(sc.nextLine());
-=======
-        JsonWriter.writeObjectToJson(u1, Path.of("u1.json"));
-
-        IRepositoryOnlineshop rep = null;
-
-        try{
-            rep= new RepositoryOnlineshopDB();
-
-            rep.open();
-
-            User u2 = new User(2, "Julia", "Biechl", LocalDate.of(2005, 9, 1), Gender.f, "j.b@gmail.com", "12345678", null, null);
-            rep.insertUser(u2, a4);
-
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
->>>>>>> e4f663131c5ffbf18813a7890fd9ce8d1bee1325
 
         System.out.print("Bitte geben Sie Ihren Nachnamen ein >>> ");
         registeredUser.setLastname(sc.nextLine());
 
-        System.out.println("Bitte geben Sie Ihren Geburtstag an >>> ");
+        System.out.println("Bitte geben Sie Ihren Geburtstag an [yyyy-mm-dd]>>> ");
+        String date = sc.nextLine();
+        registeredUser.setBirthdate(LocalDate.of(Integer.parseInt(date.split("-")[0]),Integer.parseInt(date.split("-")[1]), Integer.parseInt(date.split("-")[2])));
+
+        Gender g;
+        System.out.println("Bitte geben Sie Ihr Geschlecht an [m|w|o] >>> ");
+        switch (sc.next().toLowerCase().charAt(0)){
+            case 'm':
+                g = Gender.m;
+                break;
+            case 'w':
+                g = Gender.f;
+                break;
+            default:
+                g = Gender.o;
+                break;
+        }
+        registeredUser.setGender(g);
+
     }
 }
