@@ -4,11 +4,6 @@ import Models.*;
 import Models.DB.IRepositoryOnlineshop;
 import Models.DB.RepositoryOnlineshopDB;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -93,29 +88,40 @@ public class Main {
         sc.close();
         return choice;
     }
+
     private static void registerUser(){
         sc = new Scanner(System.in);
         User registeredUser = new User();
-        try{
-            rep= new RepositoryOnlineshopDB();
 
-            rep.open();
         System.out.println("Schön, Sie als neuen Nutzer gewonnen zu haben!");
 
-            User u2 = new User(2, "Julia", "Biechl", LocalDate.of(2005, 9, 1), Gender.f, "j.b@gmail.com", "12345678", null, null);
-            rep.insertUser(u2, a4);
         System.out.print("Bitte geben Sie ihre Email ein >>> ");
         registeredUser.setEmail(sc.nextLine());
 
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
         System.out.print("Bitte geben Sie Ihren Vornamen ein >>> ");
         registeredUser.setFirstname(sc.nextLine());
 
         System.out.print("Bitte geben Sie Ihren Nachnamen ein >>> ");
         registeredUser.setLastname(sc.nextLine());
 
-        System.out.println("Bitte geben Sie Ihren Geburtstag an >>> ");
+        System.out.println("Bitte geben Sie Ihren Geburtstag an [yyyy-mm-dd]>>> ");
+        String date = sc.nextLine();
+        registeredUser.setBirthdate(LocalDate.of(Integer.parseInt(date.split("-")[0]),Integer.parseInt(date.split("-")[1]), Integer.parseInt(date.split("-")[2])));
+
+        Gender g;
+        System.out.println("Bitte geben Sie Ihr Geschlecht an [m|w|o] >>> ");
+        switch (sc.next().toLowerCase().charAt(0)){
+            case 'm':
+                g = Gender.m;
+                break;
+            case 'w':
+                g = Gender.f;
+                break;
+            default:
+                g = Gender.o;
+                break;
+        }
+        registeredUser.setGender(g);
+
     }
 }
