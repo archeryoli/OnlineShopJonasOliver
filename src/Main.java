@@ -12,7 +12,9 @@ import java.util.*;
 public class Main {
     static Scanner sc = new Scanner(System.in);
     static List<Article> listOfAllArticles = new ArrayList<>();
+    static IRepositoryOnlineshop rep = null;
     public static void main(String[] args) {
+        User currentUser = new User();
         init();
         System.out.println("Olineshop von Jonas und Oliver");
         System.out.println("==============================");
@@ -21,10 +23,11 @@ public class Main {
             case 'a':
                 break;
             case 'r':
-                registerUser();
+                currentUser = registerUser();
+                System.out.println(currentUser);
                 break;
             case 'b':
-                System.out.println("Danke für deinen Besuch");
+                System.out.println("Danke für Ihren Besuch");
                 System.exit(0);
         }
 
@@ -48,7 +51,7 @@ public class Main {
         u1.addAddress(a3);
         System.out.println(u1);
 
-         */
+
 
         // Fehler da abstract
         //Article a = new Article(0, "Neues Product", 110.99, "TestFirma", "ProductTest", 1.5, 5);
@@ -58,6 +61,8 @@ public class Main {
         System.out.println(c);
         Article b = new Book(2, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag");
         System.out.println(b);
+
+         */
 
     }
     private static void init(){
@@ -85,31 +90,36 @@ public class Main {
             System.out.print("Anmelden / Registrieren / Abbrechen [a|r|b] >>> ");
             choice = sc.next().toLowerCase().charAt(0);
         } while (choice != 'a' && choice != 'r' && choice != 'b');
-        sc.close();
+        //sc.close();
         return choice;
     }
-    private static void registerUser(){
-        sc = new Scanner(System.in);
+    private static User registerUser() {
         User registeredUser = new User();
+        String input = "";
 
         System.out.println("Schön, Sie als neuen Nutzer gewonnen zu haben!");
 
         System.out.print("Bitte geben Sie ihre Email ein >>> ");
-        registeredUser.setEmail(sc.nextLine());
+        sc.nextLine();
+        input = sc.nextLine();
+        registeredUser.setEmail(input);
 
         System.out.print("Bitte geben Sie Ihren Vornamen ein >>> ");
-        registeredUser.setFirstname(sc.nextLine());
+        input = sc.nextLine();
+        registeredUser.setFirstname(input);
 
         System.out.print("Bitte geben Sie Ihren Nachnamen ein >>> ");
-        registeredUser.setLastname(sc.nextLine());
+        input = sc.nextLine();
+        registeredUser.setLastname(input);
 
-        System.out.println("Bitte geben Sie Ihren Geburtstag an [yyyy-mm-dd]>>> ");
+        System.out.print("Bitte geben Sie Ihren Geburtstag an [yyyy-mm-dd]>>> ");
         String date = sc.nextLine();
         registeredUser.setBirthdate(LocalDate.of(Integer.parseInt(date.split("-")[0]),Integer.parseInt(date.split("-")[1]), Integer.parseInt(date.split("-")[2])));
 
         Gender g;
-        System.out.println("Bitte geben Sie Ihr Geschlecht an [m|w|o] >>> ");
-        switch (sc.next().toLowerCase().charAt(0)){
+        System.out.print("Bitte geben Sie Ihr Geschlecht an [m|w|o] >>> ");
+        input = sc.nextLine();
+        switch (input.toLowerCase().charAt(0)){
             case 'm':
                 g = Gender.m;
                 break;
@@ -122,5 +132,19 @@ public class Main {
         }
         registeredUser.setGender(g);
 
+        System.out.print("Bitte geben Sie nun Ihr Password ein >>> ");
+        input = sc.nextLine();
+        registeredUser.setPassword(input);
+
+        System.out.println("Danke für Ihre Registrierung!");
+        try{
+            rep = new RepositoryOnlineshopDB();
+            rep.open();
+            rep.insertUser(registeredUser, new Address());
+            rep.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return registeredUser;
     }
 }
