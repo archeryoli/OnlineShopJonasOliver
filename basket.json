@@ -11,12 +11,28 @@
         "_productId": 1,
         "_productName": "Pullover Fantastico",
         "_productPrice": 420.69,
-        "_productBrand": "Fantastico Luis Vitton",
+        "_productBrand": "Luis Vitton",
         "_productDescription": "Toller Pullover bitte kaufen",
         "_productWeight": 0.3,
         "_productStockCount": 42
       },
       3
+    ],
+    [
+      {
+        "type": "Electronics",
+        "_electronicsModel": "AMD1",
+        "_electronicsWattage": 600.0,
+        "_electronicsDimensions": "25x60x50",
+        "_productId": 2,
+        "_productName": "Gaming PC",
+        "_productPrice": 1585.0,
+        "_productBrand": "Hofer",
+        "_productDescription": "Gaming PC für tolle Bilder zum Arbeiten und gamen",
+        "_productWeight": 12.0,
+        "_productStockCount": 3
+      },
+      5
     ],
     [
       {
