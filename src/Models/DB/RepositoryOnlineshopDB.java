@@ -64,5 +64,16 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
 
     }
 
+    @Override
+    public void login(User user) throws SQLException {
+
+        CallableStatement stmt = this._connection.prepareCall("? = call login(?, ?)");
+
+
+
+
+
+    }
+
 
 }

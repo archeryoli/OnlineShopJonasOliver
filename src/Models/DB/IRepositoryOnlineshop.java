@@ -11,4 +11,6 @@ public interface IRepositoryOnlineshop {
 
     void insertUser(User user, Address address) throws SQLException;
 
+    void login(User user) throws SQLException;
+
 }

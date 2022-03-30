@@ -94,20 +94,13 @@ public class Main {
     private static void registerUser(){
         sc = new Scanner(System.in);
         User registeredUser = new User();
-        try{
-            rep= new RepositoryOnlineshopDB();
 
-            rep.open();
         System.out.println("Schön, Sie als neuen Nutzer gewonnen zu haben!");
 
-            User u2 = new User(2, "Julia", "Biechl", LocalDate.of(2005, 9, 1), Gender.f, "j.b@gmail.com", "12345678", null, null);
-            rep.insertUser(u2, a4);
+
         System.out.print("Bitte geben Sie ihre Email ein >>> ");
         registeredUser.setEmail(sc.nextLine());
 
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
         System.out.print("Bitte geben Sie Ihren Vornamen ein >>> ");
         registeredUser.setFirstname(sc.nextLine());
 
