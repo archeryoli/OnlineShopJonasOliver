@@ -16,6 +16,7 @@ public class Main {
     static List<Article> listOfAllArticles = new ArrayList<>();
     static IRepositoryOnlineshop rep = null;
     static User currentUser = new User();
+    private static Scanner reader = new Scanner(System.in);
     public static void main(String[] args) {
 
         String choice = "";
@@ -27,6 +28,7 @@ public class Main {
 
         switch (showLoginMenu()){
             case 'a':
+                currentUser = login();
                 currentUser.setBasket(JsonReader.getObjectFromFile(Path.of("basket.json")));
                 break;
             case 'r':
@@ -393,6 +395,42 @@ public class Main {
         System.out.println("Sie wurden erfolgreich regestriert!");
         return registeredUser;
     }
+
+    public static User login() {
+        boolean success = false;
+        User u = new User();
+        do{
+
+            String email, password;
+
+
+            System.out.print("Bitte EMail angeben oder abbrechen[q] >>> ");
+            email = reader.nextLine();
+            u.setEmail(email);
+            if(email == "q"){
+                break;
+            }
+            System.out.println("Bitte Passwort eingeben >>> ");
+            password = reader.nextLine();
+            u.setPassword(password);
+        try {
+            rep.open();
+            success = rep.login(u);
+            rep.close();
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        if (!success){
+            System.out.println("Benutzername oder Passwort stimmen nicht überein");
+        }
+        } while(!success);
+        return u;
+
+    }
+
+
 
     private static Address addAddress() {
         String input = "";

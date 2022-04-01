@@ -16,6 +16,7 @@ public class Main {
     static List<Article> listOfAllArticles = new ArrayList<>();
     static IRepositoryOnlineshop rep = null;
     static User currentUser = new User();
+    private static Scanner reader = new Scanner(System.in);
     public static void main(String[] args) {
 
         String choice = "";
@@ -27,6 +28,7 @@ public class Main {
 
         switch (showLoginMenu()){
             case 'a':
+                currentUser = login();
                 currentUser.setBasket(JsonReader.getObjectFromFile(Path.of("basket.json")));
                 break;
             case 'r':
@@ -322,15 +324,6 @@ public class Main {
         } while (choice != 'a' && choice != 'r' && choice != 'b');
         return choice;
     }
-<<<<<<< HEAD
-    private static void registerUser(){
-        sc = new Scanner(System.in);
-        User registeredUser = new User();
-
-        System.out.println("Schön, Sie als neuen Nutzer gewonnen zu haben!");
-
-
-=======
 
     private static User registerUser() {
         User registeredUser = new User();
@@ -338,7 +331,6 @@ public class Main {
 
         System.out.println("Schön, Sie als neuen Nutzer gewonnen zu haben!");
 
->>>>>>> 3e2c84c131d58496f7865f0228b5d2abad5fd329
         System.out.print("Bitte geben Sie ihre Email ein >>> ");
         sc.nextLine();
         input = sc.nextLine();
@@ -377,14 +369,94 @@ public class Main {
         registeredUser.setPassword(input);
 
         System.out.println("Danke für Ihre Registrierung!");
+
+        System.out.print("Wollen Sie bereits eine Adresse hinzufügen [j|n] >>> ");
+        char choice = ' ';
+        do {
+            System.out.print("Wollen Sie eine Adresse hinzufügen [j|n] >>> ");
+            choice = sc.nextLine().toLowerCase().charAt(0);
+        } while (choice != 'j' && choice != 'n');
+
+        // falls nein gewählt wird wird der user einfach hinzugefügt
+        Address insertAddress = new Address();
+        if (choice == 'j'){
+            insertAddress = addAddress();
+        }
+
+
         try{
             rep = new RepositoryOnlineshopDB();
             rep.open();
-            rep.insertUser(registeredUser, new Address());
+            rep.insertUser(registeredUser, insertAddress);
             rep.close();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println("Sie wurden erfolgreich regestriert!");
         return registeredUser;
     }
+
+<<<<<<< HEAD
+    private static Address addAddress() {
+        String input = "";
+        Address addressToAdd = new Address();
+        System.out.println("Bitte geben Sie den Staat Ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setState(input);
+
+        System.out.println("Bitte geben Sie die Postleitzahl ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setPostalcode(input);
+
+        System.out.println("Bitte geben Sie den Ort ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setCity(input);
+
+        System.out.println("Bitte geben Sie die Straße Ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setStreet(input);
+
+        System.out.println("Bitte geben Sie die Hausnummer Ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setStreetNr(input);
+
+        return addressToAdd;
+    }
+=======
+    public static User login() {
+        boolean success = false;
+        User u = new User();
+        do{
+
+            String email, password;
+
+
+            System.out.print("Bitte EMail angeben oder abbrechen[q] >>> ");
+            email = reader.nextLine();
+            u.setEmail(email);
+            if(email == "q"){
+                break;
+            }
+            System.out.println("Bitte Passwort eingeben >>> ");
+            password = reader.nextLine();
+            u.setPassword(password);
+        try {
+            rep.open();
+            success = rep.login(u);
+            rep.close();
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        if (!success){
+            System.out.println("Benutzername oder Passwort stimmen nicht überein");
+        }
+        } while(!success);
+        return u;
+
+    }
+
+
+>>>>>>> ecb74bc214fe77c20b25a926f4860e5a7e1e44eb
 }
