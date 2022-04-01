@@ -65,14 +65,17 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
     }
 
     @Override
-    public void login(User user) throws SQLException {
+    public boolean login(User user) throws SQLException {
 
-        CallableStatement stmt = this._connection.prepareCall("? = call login(?, ?)");
+        PreparedStatement stmt = this._connection.prepareStatement("select login(?, sha2(?, 256)) as 'login' from user limit 1;");
 
+        stmt.setString(1, user.getEmail());
+        stmt.setString(2, user.getPassword());
 
+        ResultSet result = stmt.executeQuery();
+        result.next();
 
-
-
+        return result.getBoolean("login");
     }
 
 
