@@ -16,7 +16,6 @@ public class Main {
     static List<Article> listOfAllArticles = new ArrayList<>();
     static IRepositoryOnlineshop rep = null;
     static User currentUser = new User();
-    private static Scanner reader = new Scanner(System.in);
     public static void main(String[] args) {
 
         String choice = "";
@@ -405,13 +404,13 @@ public class Main {
 
 
             System.out.print("Bitte EMail angeben oder abbrechen[q] >>> ");
-            email = reader.nextLine();
+            email = sc.nextLine();
             u.setEmail(email);
             if(email == "q"){
                 break;
             }
             System.out.println("Bitte Passwort eingeben >>> ");
-            password = reader.nextLine();
+            password = sc.nextLine();
             u.setPassword(password);
         try {
             rep.open();
