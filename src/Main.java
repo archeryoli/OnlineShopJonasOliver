@@ -367,14 +367,56 @@ public class Main {
         registeredUser.setPassword(input);
 
         System.out.println("Danke für Ihre Registrierung!");
+
+        System.out.print("Wollen Sie bereits eine Adresse hinzufügen [j|n] >>> ");
+        char choice = ' ';
+        do {
+            System.out.print("Wollen Sie eine Adresse hinzufügen [j|n] >>> ");
+            choice = sc.nextLine().toLowerCase().charAt(0);
+        } while (choice != 'j' && choice != 'n');
+
+        // falls nein gewählt wird wird der user einfach hinzugefügt
+        Address insertAddress = new Address();
+        if (choice == 'j'){
+            insertAddress = addAddress();
+        }
+
+
         try{
             rep = new RepositoryOnlineshopDB();
             rep.open();
-            rep.insertUser(registeredUser, new Address());
+            rep.insertUser(registeredUser, insertAddress);
             rep.close();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println("Sie wurden erfolgreich regestriert!");
         return registeredUser;
+    }
+
+    private static Address addAddress() {
+        String input = "";
+        Address addressToAdd = new Address();
+        System.out.println("Bitte geben Sie den Staat Ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setState(input);
+
+        System.out.println("Bitte geben Sie die Postleitzahl ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setPostalcode(input);
+
+        System.out.println("Bitte geben Sie den Ort ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setCity(input);
+
+        System.out.println("Bitte geben Sie die Straße Ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setStreet(input);
+
+        System.out.println("Bitte geben Sie die Hausnummer Ihrer Adresse an >>> ");
+        input = sc.nextLine();
+        addressToAdd.setStreetNr(input);
+
+        return addressToAdd;
     }
 }
