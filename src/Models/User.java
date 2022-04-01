@@ -102,9 +102,7 @@ public class User {
     }
 
     public void setPassword(String _password) {
-        if(_password.length() > 7){
-            this._password = _password;
-        }
+        this._password = _password;
     }
     public void setAddresses(List<Address> addresses){
         if(addresses == null){

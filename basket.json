@@ -3,20 +3,19 @@
   "_basketHashMap": [
     [
       {
-        "type": "Clothing",
-        "_clothingType": "HODDIE",
-        "_clothingColor": "Schwarz/Black",
-        "_clothingSize": 172,
-        "_clothingFabric": "Baumwolle",
-        "_productId": 1,
-        "_productName": "Pullover Fantastico",
-        "_productPrice": 420.69,
-        "_productBrand": "Luis Vitton",
-        "_productDescription": "Toller Pullover bitte kaufen",
-        "_productWeight": 0.3,
-        "_productStockCount": 42
+        "type": "Electronics",
+        "_electronicsModel": "AZER1234",
+        "_electronicsWattage": 30.0,
+        "_electronicsDimensions": "60x10x30",
+        "_productId": 3,
+        "_productName": "Azer Bildschirm",
+        "_productPrice": 150.85,
+        "_productBrand": "Azer",
+        "_productDescription": "Curved Gaming PC mit 144Hz und 27\u0027",
+        "_productWeight": 2.0,
+        "_productStockCount": 25
       },
-      3
+      5
     ],
     [
       {
@@ -33,6 +32,23 @@
         "_productStockCount": 3
       },
       5
+    ],
+    [
+      {
+        "type": "Clothing",
+        "_clothingType": "HODDIE",
+        "_clothingColor": "Schwarz/Black",
+        "_clothingSize": 172,
+        "_clothingFabric": "Baumwolle",
+        "_productId": 1,
+        "_productName": "Pullover Fantastico",
+        "_productPrice": 420.69,
+        "_productBrand": "Luis Vitton",
+        "_productDescription": "Toller Pullover bitte kaufen",
+        "_productWeight": 0.3,
+        "_productStockCount": 42
+      },
+      3
     ],
     [
       {

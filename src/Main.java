@@ -409,15 +409,16 @@ public class Main {
             if(email == "q"){
                 break;
             }
-            System.out.println("Bitte Passwort eingeben >>> ");
+            System.out.print("Bitte Passwort eingeben >>> ");
             password = sc.nextLine();
             u.setPassword(password);
         try {
+            rep = new RepositoryOnlineshopDB();
             rep.open();
             success = rep.login(u);
             rep.close();
         }
-        catch (SQLException e){
+        catch (SQLException | ClassNotFoundException e){
             System.out.println(e.getMessage());
         }
 
