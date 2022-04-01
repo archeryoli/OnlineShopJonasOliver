@@ -19,7 +19,11 @@ public class JsonWriter {
             .registerSubtype(Book.class, "Book");
     static Gson gson = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapterFactory(runtimeTypeAdapterFactory).setPrettyPrinting().create();
     public static void writeObjectToJson(Object objectToWrite, Path path){
+
         String json = gson.toJson(objectToWrite);
+        if(objectToWrite == null){
+            json = "{}";
+        }
         try{
             Files.writeString(path, json);
         } catch(IOException e){

@@ -27,9 +27,13 @@ public class JsonReader {
             System.out.println("Fehler beim Lesen von Basket");
             System.out.println(e.getMessage());
         }
+        if(String.join("", contentOfFile).equals("null")){
+            return "{}";
+        }
         return String.join("", contentOfFile);
     }
     public static Basket getObjectFromFile(Path path){
-        return gson.fromJson(readJsonFromFile(path), Basket.class);
+        Basket b = gson.fromJson(readJsonFromFile(path), Basket.class);
+        return b == null ? new Basket() : b;
     }
 }

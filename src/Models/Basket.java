@@ -22,7 +22,9 @@ public class Basket {
     }
 
     public void setBasketHashMap(HashMap<Article, Integer> _basketHashMap) {
-        this._basketHashMap = _basketHashMap;
+        if(_basketHashMap != null){
+            this._basketHashMap = _basketHashMap;
+        }
     }
     public void addBasketHashMapEntry(Article articleToAdd, int articleCount){
         _basketHashMap.put(articleToAdd, articleCount);

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import org.nocrala.tools.texttablefmt.*;
 
 public class Main {
@@ -249,8 +250,8 @@ public class Main {
     }
 
     private static void showBasket(User currentUser) {
-        if(currentUser.getBasket() == null){
-            System.out.println("Hier gibt es nichts zu sehen ...");
+        if(currentUser.getBasket().equals(new Basket()) || currentUser.getBasket() == null){
+            System.out.println("Hier gibt es nichts zu sehen ...\n");
             return;
         }
         Table t = new Table(6, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE);
@@ -269,6 +270,40 @@ public class Main {
             t.addCell(entry.getKey().getClass().getSimpleName());
         }
         System.out.println(t.render());
+
+        System.out.print("\nWollen Sie die Gegenstände in Ihrem Warenkorb kaufen [j|n] >>> ");
+        String input = sc.nextLine();
+        if(input.toLowerCase().charAt(0) == 'j'){
+            buyArticlesInBasket();
+        }
+    }
+
+    private static void buyArticlesInBasket() {
+        Table t = new Table(7, BorderStyle.UNICODE_BOX_DOUBLE_BORDER);
+        t.addCell("Stückanzahl");
+        t.addCell("ID-Nummer");
+        t.addCell("Name");
+        t.addCell("Preis pro Stück");
+        t.addCell("Marke");
+        t.addCell("Typ");
+        t.addCell("GesamtPreis");
+        double sumPrice = 0;
+
+        for(Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+            t.addCell(String.valueOf(entry.getValue()));
+            t.addCell(String.valueOf(entry.getKey().getProductId()));
+            t.addCell(entry.getKey().getProductName());
+            t.addCell(String.format("%.2f", entry.getKey().getProductPrice()));
+            t.addCell(entry.getKey().getProductBrand());
+            t.addCell(entry.getKey().getClass().getSimpleName());
+            t.addCell(String.format("%.2f", entry.getKey().getProductPrice() * entry.getValue()));
+            sumPrice += entry.getKey().getProductPrice() * entry.getValue();
+        }
+        System.out.println(t.render());
+        System.out.printf("Ihre Rechnung macht %.2f aus.\n\n", sumPrice);
+
+        JsonWriter.writeObjectToJson(null, Path.of("basket.json"));
+        currentUser.setBasket(new Basket());
     }
 
     private static void showShopMenu() {
@@ -331,7 +366,6 @@ public class Main {
         System.out.println("Schön, Sie als neuen Nutzer gewonnen zu haben!");
 
         System.out.print("Bitte geben Sie ihre Email ein >>> ");
-        sc.nextLine();
         input = sc.nextLine();
         registeredUser.setEmail(input);
 
@@ -368,8 +402,7 @@ public class Main {
         registeredUser.setPassword(input);
 
         System.out.println("Danke für Ihre Registrierung!");
-
-        System.out.print("Wollen Sie bereits eine Adresse hinzufügen [j|n] >>> ");
+        
         char choice = ' ';
         do {
             System.out.print("Wollen Sie eine Adresse hinzufügen [j|n] >>> ");
@@ -429,8 +462,6 @@ public class Main {
         return u;
 
     }
-
-
 
     private static Address addAddress() {
         String input = "";
