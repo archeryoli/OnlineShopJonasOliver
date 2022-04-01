@@ -434,23 +434,23 @@ public class Main {
     private static Address addAddress() {
         String input = "";
         Address addressToAdd = new Address();
-        System.out.println("Bitte geben Sie den Staat Ihrer Adresse an >>> ");
+        System.out.print("Bitte geben Sie den Staat Ihrer Adresse an >>> ");
         input = sc.nextLine();
         addressToAdd.setState(input);
 
-        System.out.println("Bitte geben Sie die Postleitzahl ihrer Adresse an >>> ");
+        System.out.print("Bitte geben Sie die Postleitzahl ihrer Adresse an >>> ");
         input = sc.nextLine();
         addressToAdd.setPostalcode(input);
 
-        System.out.println("Bitte geben Sie den Ort ihrer Adresse an >>> ");
+        System.out.print("Bitte geben Sie den Ort ihrer Adresse an >>> ");
         input = sc.nextLine();
         addressToAdd.setCity(input);
 
-        System.out.println("Bitte geben Sie die Straße Ihrer Adresse an >>> ");
+        System.out.print("Bitte geben Sie die Straße Ihrer Adresse an >>> ");
         input = sc.nextLine();
         addressToAdd.setStreet(input);
 
-        System.out.println("Bitte geben Sie die Hausnummer Ihrer Adresse an >>> ");
+        System.out.print("Bitte geben Sie die Hausnummer Ihrer Adresse an >>> ");
         input = sc.nextLine();
         addressToAdd.setStreetNr(input);
 
