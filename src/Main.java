@@ -17,8 +17,14 @@ public class Main {
     static List<Article> listOfAllArticles = new ArrayList<>();
     static IRepositoryOnlineshop rep = null;
     static User currentUser = new User();
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        // todo adminPasswort hinzufügen
+        // admin Email: admin@admin.com
+        // admin Passwort: root
+        // admin kann StockCount für jedes Produkt erhöhen
+        // vielleicht produkte in datenbank abspeichern
+        // namen ändern für jedes produkt
         String choice = "";
 
         init();
@@ -59,10 +65,82 @@ public class Main {
                     break;
                 case 's':
                     searchMenu();
+                    break;
+                case 'e':
+                    if(currentUser.getIsAdmin()){
+                        editArticle();
+                    }
+                    break;
             }
 
         }while (choice.charAt(0) != 'q');
         System.out.println("Danke für Ihren Besuch");
+    }
+
+    private static void editArticle() {
+        int idOfProduct = 0;
+        do{
+            System.out.print("Bitte geben Sie die ID Ihres Artikels an oder abbrechen [q] >>> ");
+            String v = sc.nextLine();
+
+            if(v.toLowerCase().charAt(0) == 'q' ){
+                return;
+            }
+            if(v.matches("-?\\d+")){
+                if(Integer.parseInt(v)<listOfAllArticles.size()){
+                    idOfProduct = Integer.parseInt(v);
+                } else{
+                    System.out.println("Ungültige ID-Nummer!");
+                }
+            } else {
+                System.out.println("Bitte geben Sie eine Zahl ein!");
+            }
+        } while (!(idOfProduct > 0));
+        Article currentArticle = null;
+        for(Article a: listOfAllArticles){
+            if(idOfProduct == a.getProductId()){
+                currentArticle = a;
+                break;
+            }
+        }
+        String choice;
+
+        System.out.print("Was soll der neue Name des Produkts sein, oder überspringen [b] >>> ");
+        choice = sc.nextLine();
+        currentArticle.setProductName(choice.trim().equals("b") ? currentArticle.getProductName() : choice);
+
+        System.out.print("Was soll der neue Preis des Produkts sein, oder überspringen [b] >>> ");
+        choice = sc.nextLine();
+        currentArticle.setProductPrice(choice.trim().equals("b") ? currentArticle.getProductPrice() : Double.parseDouble(choice));
+
+        System.out.print("Was soll die neue Marke des Produkts sein, oder überspringen [b] >>> ");
+        choice = sc.nextLine();
+        currentArticle.setProductBrand(choice.trim().equals("b") ? currentArticle.getProductBrand() : choice);
+
+        System.out.print("Was soll die neue Beschreibung des Produkts sein, oder überspringen [b] >>> ");
+        choice = sc.nextLine();
+        currentArticle.setProductDescription(choice.trim().equals("b") ? currentArticle.getProductDescription() : choice);
+
+        System.out.print("Was soll die neue Beschreibung des Produkts sein, oder überspringen [b] >>> ");
+        choice = sc.nextLine();
+        currentArticle.setProductDescription(choice.trim().equals("b") ? currentArticle.getProductDescription() : choice);
+
+        System.out.print("Was soll das neue Gewicht des Produkts sein, oder überspringen [b] >>> ");
+        choice = sc.nextLine();
+        currentArticle.setProductWeight(choice.trim().equals("b") ? currentArticle.getProductWeight() : Double.parseDouble(choice));
+
+        System.out.print("Was soll die neue Stückzahl des Produkts sein, oder überspringen [b] >>> ");
+        choice = sc.nextLine();
+        currentArticle.setProductStockCount(choice.trim().equals("b") ? currentArticle.getProductStockCount() : Integer.parseInt(choice));
+
+        try{
+          rep.open();
+          
+          rep.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
 
     private static void searchMenu() {
@@ -71,6 +149,7 @@ public class Main {
         System.out.println("Suche nach Marke [m]");
         System.out.println("Suche nach Typ [t]");
         System.out.println("Suche nach Preisgrenzen [p]");
+        System.out.println("Details eines Produkts anzeigen [i]");
         System.out.println("Zurück zum Hauptmenü [q]");
         System.out.print(">>> ");
 
@@ -88,6 +167,84 @@ public class Main {
             case 'p':
                 searchByPriceRange();
                 break;
+            case 't':
+                searchByType();
+                break;
+            case 'i':
+                productDetail();
+                break;
+        }
+    }
+
+    private static void productDetail() {
+        int idOfProduct = 0;
+        do{
+            System.out.print("Bitte geben Sie die ID Ihres Artikels an oder abbrechen [q] >>> ");
+            String v = sc.nextLine();
+
+            if(v.toLowerCase().charAt(0) == 'q' ){
+                return;
+            }
+            if(v.matches("-?\\d+")){
+                if(Integer.parseInt(v)<listOfAllArticles.size()){
+                    idOfProduct = Integer.parseInt(v);
+                } else{
+                    System.out.println("Ungültige ID-Nummer!");
+                }
+            } else {
+                System.out.println("Bitte geben Sie eine Zahl ein!");
+            }
+        } while (!(idOfProduct > 0));
+
+        Table t = new Table(8, BorderStyle.UNICODE_BOX_DOUBLE_BORDER);
+        t.addCell("ID-Nummer");
+        t.addCell("Name");
+        t.addCell("Beschreibung");
+        t.addCell("Preis");
+        t.addCell("Marke");
+        t.addCell("Typ");
+        t.addCell("Gewicht");
+        t.addCell("Lagermenge");
+
+        for(Article a: listOfAllArticles){
+            t.addCell(String.valueOf(a.getProductId()));
+            t.addCell(a.getProductName());
+            t.addCell(a.getProductDescription());
+            t.addCell(String.format("%.2f", a.getProductPrice()));
+            t.addCell(a.getProductBrand());
+            t.addCell(a.getClass().getSimpleName());
+            t.addCell(String.valueOf(a.getProductWeight()));
+            t.addCell(String.valueOf(a.getProductStockCount()));
+        }
+
+    }
+
+    private static void searchByType() {
+        System.out.print("Bitte geben Sie den zu suchenden Typ ein >>> ");
+        String typeToLookFor = sc.nextLine();
+
+        Table t = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE);
+        t.addCell("ID-Nummer");
+        t.addCell("Name");
+        t.addCell("Preis");
+        t.addCell("Marke");
+        t.addCell("Typ");
+        int size = 0;
+        for(Article a: listOfAllArticles){
+            if(a.getClass().getSimpleName().toLowerCase().contains(typeToLookFor.toLowerCase())){
+                t.addCell(String.valueOf(a.getProductId()));
+                t.addCell(a.getProductName());
+                t.addCell(String.format("%.2f", a.getProductPrice()));
+                t.addCell(a.getProductBrand());
+                t.addCell(a.getClass().getSimpleName());
+                size++;
+            }
+        }
+
+        if(size == 0){
+            System.out.println("Es wurden keine Produkte gefunden!");
+        } else {
+            System.out.println(t.render());
         }
     }
 
@@ -313,7 +470,9 @@ public class Main {
         System.out.println("Bestimmten Artikel suchen [s]");
         System.out.println("Einen Artikel dem Warenkorb hinzufügen [h]");
         System.out.println("Warenkorb anzeigen [w]");
-        System.out.println("Benutzerdaten ändern [b]");
+        if(currentUser.getIsAdmin()){
+            System.out.println("Artikel ändern [e]");
+        }
         System.out.println("Abbrechen [q]");
         System.out.print(">>> ");
     }
@@ -445,19 +604,23 @@ public class Main {
             System.out.print("Bitte Passwort eingeben >>> ");
             password = sc.nextLine();
             u.setPassword(password);
-        try {
-            rep = new RepositoryOnlineshopDB();
-            rep.open();
-            success = rep.login(u);
-            rep.close();
-        }
-        catch (SQLException | ClassNotFoundException e){
-            System.out.println(e.getMessage());
-        }
+            if(u.getEmail() == Admin.getUserName() && u.getPassword() == Admin.getPassword()){
+                u.setIsAdmin(true);
+                break;
+            }
+            try {
+                rep = new RepositoryOnlineshopDB();
+                rep.open();
+                success = rep.login(u);
+                rep.close();
+            }
+            catch (SQLException | ClassNotFoundException e){
+                System.out.println(e.getMessage());
+            }
 
-        if (!success){
-            System.out.println("Benutzername oder Passwort stimmen nicht überein");
-        }
+            if (!success){
+                System.out.println("Benutzername oder Passwort stimmen nicht überein");
+            }
         } while(!success);
         return u;
 

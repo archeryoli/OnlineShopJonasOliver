@@ -15,6 +15,7 @@ public class User {
     private String _password;
     private List<Address> _addresses = new ArrayList<>();
     private Basket _basket;
+    private boolean _isAdmin;
 
     public User() {
     }
@@ -65,6 +66,10 @@ public class User {
 
     public Basket getBasket() {
         return this._basket;
+    }
+
+    public boolean getIsAdmin(){
+        return this._isAdmin;
     }
 
     public void setUserId(int _userId) {
@@ -123,6 +128,10 @@ public class User {
 
     public void setBasket(Basket _basket) {
         this._basket = _basket;
+    }
+
+    public void setIsAdmin(boolean isAdmin){
+        this._isAdmin = isAdmin;
     }
 
     protected boolean canEqual(final Object other) {
