@@ -13,4 +13,6 @@ public interface IRepositoryOnlineshop {
 
     boolean login(User user) throws SQLException;
 
+    boolean updateArticle(Article article) throws SQLException;
+
 }

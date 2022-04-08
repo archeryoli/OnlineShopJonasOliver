@@ -10,7 +10,7 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
     //fields
     private String url = "jdbc:mysql://localhost/onlineshop";
     private String user = "root";
-    private String pwd = "root";
+    private String pwd = "Samuelx2580";
     private Connection _connection;
 
     //ctor
@@ -78,6 +78,22 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
         boolean l = result.getBoolean("login");
 
         return l;
+    }
+
+    @Override
+    public boolean updateArticle(Article article) throws SQLException {
+
+        CallableStatement stmt = this._connection.prepareCall("{call updateArticle(?, ?, ?, ?, ?, ?, ?}");
+
+        stmt.setInt(1, article.getProductId());
+        stmt.setString(2, article.getProductName());
+        stmt.setDouble(3, article.getProductPrice());
+        stmt.setString(4, article.getProductBrand());
+        stmt.setString(5, article.getProductDescription());
+        stmt.setDouble(6, article.getProductWeight());
+        stmt.setInt(7, article.getProductStockCount());
+
+        return stmt.executeUpdate() == 1;
     }
 
 

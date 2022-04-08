@@ -461,6 +461,9 @@ public class Main {
         } while(!success);
         return u;
 
+
+
+
     }
 
     private static Address addAddress() {
@@ -487,5 +490,18 @@ public class Main {
         addressToAdd.setStreetNr(input);
 
         return addressToAdd;
+    }
+
+    private static void updateArticle(Article article){
+
+        try{
+            rep.open();
+            rep.updateArticle(article);
+            rep.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
