@@ -667,4 +667,23 @@ public class Main {
 
 
     }
+
+    private static void checkStockAtCheckOut(){
+
+        List<Article> failedArticles = new ArrayList<Article>();
+
+        for(Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+            for (Article a : listOfAllArticles){
+                if (a.getProductId() == entry.getKey().getProductId()){
+                    if (a.getProductStockCount() < entry.getValue()){
+                        failedArticles.add(a);
+                    }
+
+                }
+
+            }
+
+        }
+        System.out.println(failedArticles);
+    }
 }
