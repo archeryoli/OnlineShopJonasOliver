@@ -16,6 +16,10 @@ public class Electronics extends Article {
         this.setElectronicsDimensions(electronicsDimensions);
     }
 
+    public Electronics(Article a) {
+        super(a);
+    }
+
     public String getElectronicsModel() {
         return this._electronicsModel;
     }

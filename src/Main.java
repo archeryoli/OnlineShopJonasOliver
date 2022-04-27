@@ -11,6 +11,7 @@ import java.util.*;
 
 import com.google.gson.internal.bind.util.ISO8601Utils;
 import org.nocrala.tools.texttablefmt.*;
+import org.w3c.dom.ls.LSOutput;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
@@ -121,10 +122,6 @@ public class Main {
         choice = sc.nextLine();
         currentArticle.setProductDescription(choice.trim().equals("b") ? currentArticle.getProductDescription() : choice);
 
-        System.out.print("Was soll die neue Beschreibung des Produkts sein, oder überspringen [b] >>> ");
-        choice = sc.nextLine();
-        currentArticle.setProductDescription(choice.trim().equals("b") ? currentArticle.getProductDescription() : choice);
-
         System.out.print("Was soll das neue Gewicht des Produkts sein, oder überspringen [b] >>> ");
         choice = sc.nextLine();
         currentArticle.setProductWeight(choice.trim().equals("b") ? currentArticle.getProductWeight() : Double.parseDouble(choice));
@@ -134,10 +131,11 @@ public class Main {
         currentArticle.setProductStockCount(choice.trim().equals("b") ? currentArticle.getProductStockCount() : Integer.parseInt(choice));
 
         try{
-          rep.open();
-          
-          rep.close();
-        } catch (SQLException throwables) {
+            rep = new RepositoryOnlineshopDB();
+            rep.open();
+            rep.updateArticle(currentArticle);
+            rep.close();
+        } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
 
@@ -604,7 +602,7 @@ public class Main {
             System.out.print("Bitte Passwort eingeben >>> ");
             password = sc.nextLine();
             u.setPassword(password);
-            if(u.getEmail() == Admin.getUserName() && u.getPassword() == Admin.getPassword()){
+            if(u.getEmail().equals(Admin.getUserName()) && u.getPassword().equals(Admin.getPassword())){
                 u.setIsAdmin(true);
                 break;
             }
@@ -654,16 +652,6 @@ public class Main {
 
         return addressToAdd;
     }
-
-    private static void updateArticle(Article article){
-
-        try{
-            rep.open();
-            rep.updateArticle(article);
-            rep.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
 
     }
