@@ -2,6 +2,7 @@ package Models.DB;
 import Models.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface IRepositoryOnlineshop {
 
@@ -14,5 +15,7 @@ public interface IRepositoryOnlineshop {
     boolean login(User user) throws SQLException;
 
     boolean updateArticle(Article article) throws SQLException;
+
+    List<Article> getAllArticles() throws SQLException;
 
 }

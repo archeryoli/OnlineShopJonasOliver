@@ -1,6 +1,6 @@
 package Models;
 
-public abstract class Article {
+public class Article {
     private int _productId;
     private String _productName;
     private double _productPrice;
@@ -11,6 +11,9 @@ public abstract class Article {
 
     public Article() {
         this(0, "", 0.0, "", "", 0.0, 0);
+    }
+    public Article(Article a){
+        this(a.getProductId(), a.getProductName(), a.getProductPrice(), a.getProductBrand(), a.getProductDescription(), a.getProductWeight(), a.getProductStockCount());
     }
     public Article(int productId, String productName, double productPrice, String productBrand, String productDescription, double productWeight, int productStockCount){
         this.setProductId(productId);

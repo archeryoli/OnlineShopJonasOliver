@@ -19,6 +19,10 @@ public class Clothing extends Article{
         this.setClothingFabric(clothingFabric);
     }
 
+    public Clothing(Article a) {
+        super(a);
+    }
+
     public ClothingType getClothingType() {
         return this._clothingType;
     }

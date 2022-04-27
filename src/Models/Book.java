@@ -22,6 +22,10 @@ public class Book extends Article{
         this.setBookPublisher(_bookPublisher);
     }
 
+    public Book(Article a) {
+        super(a);
+    }
+
 
     public String getBookISBNR() {
         return this._bookISBNR;

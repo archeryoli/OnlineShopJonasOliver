@@ -2,6 +2,8 @@ package Models.DB;
 
 import Models.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
 
@@ -10,7 +12,7 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
     //fields
     private String url = "jdbc:mysql://localhost/onlineshop";
     private String user = "root";
-    private String pwd = "Samuelx2580";
+    private String pwd = "root";
     private Connection _connection;
 
     //ctor
@@ -94,6 +96,51 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
         stmt.setInt(7, article.getProductStockCount());
 
         return stmt.executeUpdate() == 1;
+    }
+
+    @Override
+    public List<Article> getAllArticles() throws SQLException {
+        List<Article> foundArticles = new ArrayList<>();
+        PreparedStatement stmt = this._connection.prepareCall("select * from article left join electronics using(articleId) left join clothing using(articleId) left join book using(articleId)");
+
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()){
+            Article a = new Article();
+            a.setProductId(rs.getInt("articleId"));
+            a.setProductName(rs.getString("productName"));
+            a.setProductPrice(rs.getDouble("productPrice"));
+            a.setProductBrand(rs.getString("productBrand"));
+            a.setProductDescription(rs.getString("productDescription"));
+            a.setProductWeight(rs.getDouble("productWeight"));
+            a.setProductStockCount(rs.getInt("productStockCount"));
+            if(rs.getString("electronicsModel") != null){
+                Electronics e = new Electronics(a);
+
+                e.setElectronicsModel(rs.getString("electronicsModel"));
+                e.setElectronicsWattage(rs.getDouble("electronicsWattage"));
+                e.setElectronicsDimensions(rs.getString("electronicsDimensions"));
+                System.out.println("Elek");
+            } else if(rs.getString("clothingSize") != null){
+                Clothing c = new Clothing(a);
+                c.setClothingType(ClothingType.values()[rs.getInt("clothingType")]);
+                c.setClothingColor(rs.getString("clothingColor"));
+                c.setClothingSize(rs.getInt("clothingSize"));
+                c.setClothingFabric(rs.getString("clothingFabric"));
+                System.out.println("Cloth");
+            } else if(rs.getString("title") != null){
+                Book b = new Book(a);
+                b.setBookISBNR(rs.getString("bookISBNR"));
+                b.setTitle(rs.getString("title"));
+                b.setBookAuthor(rs.getString("bookAuthor"));
+                b.setBookPages(rs.getInt("bookPages"));
+                b.setBookPublisher(rs.getString("bookPublisher"));
+                System.out.println("book");
+
+            }
+            foundArticles.add(a);
+            //asdf.setasdf(result.getDatenTyp("Label"));
+        }
+        return foundArticles;
     }
 
 
