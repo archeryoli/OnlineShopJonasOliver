@@ -15,4 +15,7 @@ public interface IRepositoryOnlineshop {
 
     boolean updateArticle(Article article) throws SQLException;
 
+    void insertArticle(Article article) throws SQLException;
+
+
 }

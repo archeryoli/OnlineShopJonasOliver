@@ -684,6 +684,6 @@ public class Main {
             }
 
         }
-        System.out.println(failedArticles);
+        System.out.println("Zu wenig auf Lager von>>> " + failedArticles);
     }
 }
