@@ -49,19 +49,6 @@ public class Main {
         System.out.println("Schön das Sie hier sind!\n");
         System.out.println("========================\n");
 
-        try{
-            rep = new RepositoryOnlineshopDB();
-            rep.open();
-            for(Article a: rep.getAllArticles()){
-                System.out.println(a);
-            }
-            rep.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
         do {
             showShopMenu();
             choice = sc.nextLine().toLowerCase();
@@ -666,4 +653,25 @@ public class Main {
         return addressToAdd;
     }
 
+
+    }
+
+    private static void checkStockAtCheckOut(){
+
+        List<Article> failedArticles = new ArrayList<Article>();
+
+        for(Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+            for (Article a : listOfAllArticles){
+                if (a.getProductId() == entry.getKey().getProductId()){
+                    if (a.getProductStockCount() < entry.getValue()){
+                        failedArticles.add(a);
+                    }
+
+                }
+
+            }
+
+        }
+        System.out.println(failedArticles);
+    }
 }
