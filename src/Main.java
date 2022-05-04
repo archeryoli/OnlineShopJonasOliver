@@ -20,7 +20,6 @@ public class Main {
     static User currentUser = new User();
 
     public static void main(String[] args) {
-        // todo adminPasswort hinzufügen
         // admin Email: admin@admin.com
         // admin Passwort: root
         // admin kann StockCount für jedes Produkt erhöhen
@@ -76,10 +75,6 @@ public class Main {
 
         }while (choice.charAt(0) != 'q');
         System.out.println("Danke für Ihren Besuch");
-
-
-
-
     }
 
     private static void editArticle() {
@@ -92,7 +87,7 @@ public class Main {
                 return;
             }
             if(v.matches("-?\\d+")){
-                if(Integer.parseInt(v)<listOfAllArticles.size()){
+                if(checkIfValidId(Integer.parseInt(v))){
                     idOfProduct = Integer.parseInt(v);
                 } else{
                     System.out.println("Ungültige ID-Nummer!");
@@ -188,7 +183,7 @@ public class Main {
                 return;
             }
             if(v.matches("-?\\d+")){
-                if(Integer.parseInt(v)<listOfAllArticles.size()){
+                if(checkIfValidId(Integer.parseInt(v))){
                     idOfProduct = Integer.parseInt(v);
                 } else{
                     System.out.println("Ungültige ID-Nummer!");
@@ -198,7 +193,7 @@ public class Main {
             }
         } while (!(idOfProduct > 0));
 
-        Table t = new Table(8, BorderStyle.UNICODE_BOX_DOUBLE_BORDER);
+        Table t = new Table(8, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE);
         t.addCell("ID-Nummer");
         t.addCell("Name");
         t.addCell("Beschreibung");
@@ -209,16 +204,26 @@ public class Main {
         t.addCell("Lagermenge");
 
         for(Article a: listOfAllArticles){
-            t.addCell(String.valueOf(a.getProductId()));
-            t.addCell(a.getProductName());
-            t.addCell(a.getProductDescription());
-            t.addCell(String.format("%.2f", a.getProductPrice()));
-            t.addCell(a.getProductBrand());
-            t.addCell(a.getClass().getSimpleName());
-            t.addCell(String.valueOf(a.getProductWeight()));
-            t.addCell(String.valueOf(a.getProductStockCount()));
+            if(idOfProduct == a.getProductId()){
+                t.addCell(String.valueOf(a.getProductId()));
+                t.addCell(a.getProductName());
+                t.addCell(a.getProductDescription());
+                t.addCell(String.format("%.2f", a.getProductPrice()));
+                t.addCell(a.getProductBrand());
+                t.addCell(a.getClass().getSimpleName());
+                t.addCell(String.valueOf(a.getProductWeight()));
+                t.addCell(String.valueOf(a.getProductStockCount()));
+            }
         }
-
+        System.out.println(t.render());
+    }
+    private static boolean checkIfValidId(int idToCheck){
+        for(Article a: listOfAllArticles){
+            if(a.getProductId() == idToCheck){
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void searchByType() {
@@ -368,7 +373,7 @@ public class Main {
                 return;
             }
             if(v.matches("-?\\d+")){
-                 if(Integer.parseInt(v)<listOfAllArticles.size()){
+                 if(checkIfValidId(Integer.parseInt(v))){
                      idOfProduct = Integer.parseInt(v);
                  } else{
                      System.out.println("Ungültige ID-Nummer!");
@@ -433,7 +438,13 @@ public class Main {
         System.out.print("\nWollen Sie die Gegenstände in Ihrem Warenkorb kaufen [j|n] >>> ");
         String input = sc.nextLine();
         if(input.toLowerCase().charAt(0) == 'j'){
-            buyArticlesInBasket();
+            // Wenn es keine Probleme gibt
+            if(checkStockAtCheckOut()){
+                System.out.println("Hier ist Ihre Rechnung:");
+                buyArticlesInBasket();
+            } else {
+                System.out.println("Bitte kümmern Sie sich über Ihren Warenkorb!");
+            }
         }
     }
 
@@ -480,7 +491,20 @@ public class Main {
     }
 
     private static void init(){
-        listOfAllArticles.add(new Electronics(1, "Waschmaschine", 299.99, "Bosch", "Waschmaschine mit Anti-bügel Funktion", 150, 7, "XA6381", 950, "60x70x80"));
+        try{
+            rep = new RepositoryOnlineshopDB();
+            rep.open();
+            for(Article a: rep.getAllArticles()){
+                listOfAllArticles.add(a);
+                System.out.println(a);
+            }
+            rep.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        /*listOfAllArticles.add(new Electronics(1, "Waschmaschine", 299.99, "Bosch", "Waschmaschine mit Anti-bügel Funktion", 150, 7, "XA6381", 950, "60x70x80"));
         listOfAllArticles.add(new Electronics(2, "Gaming PC", 1585, "Hofer", "Gaming PC für tolle Bilder zum Arbeiten und gamen", 12, 3, "AMD1", 600, "25x60x50"));
         listOfAllArticles.add(new Electronics(3, "Azer Bildschirm", 150.85, "Azer", "Curved Gaming PC mit 144Hz und 27'", 2, 25, "AZER1234", 30, "60x10x30"));
 
@@ -491,6 +515,7 @@ public class Main {
         listOfAllArticles.add(new Book(7, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag"));
         listOfAllArticles.add(new Book(8, "Die Räuber", 11, "", "Oida des woa lektüre. goa koan bock", 0.5, 9, "23456", "Die Räuber", "Schiller", 175, "Hamburger Buchverlag"));
         listOfAllArticles.add(new Book(9, "Unter allem liegt die Angst", 19.90, "", "Sehr emotionales Buch welches über Rassismus im Alltag spricht", 0.4, 1, "354567", "Unter allem liegt die Angst", "Matthias Daxer", 200, "FreeVerlag.online"));
+    */
     }
 
     private static void showAllArticles(){
@@ -657,23 +682,36 @@ public class Main {
         return addressToAdd;
     }
 
-    private static void checkStockAtCheckOut(){
+    private static boolean checkStockAtCheckOut(){
 
         List<Article> failedArticles = new ArrayList<Article>();
-
+        boolean success = true;
         for(Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
             for (Article a : listOfAllArticles){
                 if (a.getProductId() == entry.getKey().getProductId()){
                     if (a.getProductStockCount() < entry.getValue()){
                         failedArticles.add(a);
+                        success = false;
                     }
-
                 }
-
             }
-
         }
-        System.out.println("Zu wenig auf Lager von>>> " + failedArticles);
+        System.out.println("Es wurde ein Fehler in Ihrer bestellung gefunden: ");
+        Table t = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE);
+        t.addCell("ID-Nummer");
+        t.addCell("Name");
+        t.addCell("Preis");
+        t.addCell("Marke");
+        t.addCell("Typ");
+        for(Article a: failedArticles){
+            t.addCell(String.valueOf(a.getProductId()));
+            t.addCell(a.getProductName());
+            t.addCell(String.format("%.2f", a.getProductPrice()));
+            t.addCell(a.getProductBrand());
+            t.addCell(a.getClass().getSimpleName());
+        }
+        System.out.println(t.render());
+        return success;
     }
 
     private static void editBasket(){

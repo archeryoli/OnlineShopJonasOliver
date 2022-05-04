@@ -193,14 +193,14 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
                 e.setElectronicsModel(rs.getString("electronicsModel"));
                 e.setElectronicsWattage(rs.getDouble("electronicsWattage"));
                 e.setElectronicsDimensions(rs.getString("electronicsDimensions"));
-                System.out.println("Elek");
+                foundArticles.add(e);
             } else if(rs.getString("clothingSize") != null){
                 Clothing c = new Clothing(a);
                 c.setClothingType(ClothingType.values()[rs.getInt("clothingType")]);
                 c.setClothingColor(rs.getString("clothingColor"));
                 c.setClothingSize(rs.getInt("clothingSize"));
                 c.setClothingFabric(rs.getString("clothingFabric"));
-                System.out.println("Cloth");
+                foundArticles.add(c);
             } else if(rs.getString("title") != null){
                 Book b = new Book(a);
                 b.setBookISBNR(rs.getString("bookISBNR"));
@@ -208,10 +208,8 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
                 b.setBookAuthor(rs.getString("bookAuthor"));
                 b.setBookPages(rs.getInt("bookPages"));
                 b.setBookPublisher(rs.getString("bookPublisher"));
-                System.out.println("book");
-
+                foundArticles.add(b);
             }
-            foundArticles.add(a);
             //asdf.setasdf(result.getDatenTyp("Label"));
         }
         return foundArticles;
