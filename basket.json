@@ -1,1 +1,23 @@
-{}
+{
+  "_basketId": 0,
+  "_basketHashMap": [
+    [
+      {
+        "type": "Book",
+        "_bookISBNR": "213243",
+        "_title": "ARK-Guide",
+        "_bookAuthor": "Max Mustermann",
+        "_bookPages": 265,
+        "_bookPublisher": "Bildnerverlag",
+        "_productId": 1,
+        "_productName": "ARK-Guide",
+        "_productPrice": 20.99,
+        "_productBrand": "BildnerVerlag",
+        "_productDescription": "Alles wissenswerte für ARK",
+        "_productWeight": 2.0,
+        "_productStockCount": 5
+      },
+      6
+    ]
+  ]
+}
