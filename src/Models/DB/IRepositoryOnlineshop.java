@@ -18,5 +18,6 @@ public interface IRepositoryOnlineshop {
 
     void insertArticle(Article article) throws SQLException;
 
+     List<Article> getAllArticles() throws SQLException;
 
 }

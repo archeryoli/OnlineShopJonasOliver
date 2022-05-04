@@ -76,6 +76,10 @@ public class Main {
 
         }while (choice.charAt(0) != 'q');
         System.out.println("Danke für Ihren Besuch");
+
+
+
+
     }
 
     private static void editArticle() {
@@ -653,9 +657,6 @@ public class Main {
         return addressToAdd;
     }
 
-
-    }
-
     private static void checkStockAtCheckOut(){
 
         List<Article> failedArticles = new ArrayList<Article>();
@@ -673,5 +674,15 @@ public class Main {
 
         }
         System.out.println("Zu wenig auf Lager von>>> " + failedArticles);
+    }
+
+    private static void editBasket(){
+        int artikelID;
+        System.out.print("ID von Artikel den sie Bearbeiten möchten >>> ");
+        artikelID = sc.nextInt();
+        for (Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+            if(){}
+        }
+
     }
 }
