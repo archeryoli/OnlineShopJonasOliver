@@ -12,7 +12,7 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
     //fields
     private String url = "jdbc:mysql://localhost/onlineshop";
     private String user = "root";
-    private String pwd = "Samuelx2580";
+    private String pwd = "root";
     private Connection _connection;
 
     //ctor

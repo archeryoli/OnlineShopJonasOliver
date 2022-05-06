@@ -434,9 +434,9 @@ public class Main {
         }
         System.out.println(t.render());
 
-        System.out.print("\nWollen Sie die Gegenstände in Ihrem Warenkorb kaufen [j|n] >>> ");
+        System.out.print("\nKaufen | ändern | abbrechen [k|e|q] >>> ");
         String input = sc.nextLine();
-        if(input.toLowerCase().charAt(0) == 'j'){
+        if(input.toLowerCase().charAt(0) == 'k'){
             // Wenn es keine Probleme gibt
             if(checkStockAtCheckOut()){
                 System.out.println("Hier ist Ihre Rechnung:");
@@ -444,6 +444,8 @@ public class Main {
             } else {
                 System.out.println("Bitte kümmern Sie sich über Ihren Warenkorb!");
             }
+        } else if(input.toLowerCase().charAt(0) == 'e'){
+            editBasket();
         }
     }
 
@@ -772,6 +774,8 @@ public class Main {
 
             case 'l':
                 currentUser.getBasket().removeBasketHashMapEntry(foundArticle);
+                JsonWriter.writeObjectToJson(currentUser.getBasket(), Path.of("basket.json"));
+
                 break;
 
             case 'c':
@@ -780,7 +784,7 @@ public class Main {
                     System.out.print("Neue Anzahl eingeben >>> ");
                     String v = sc.nextLine();
                     if (v.matches("-?\\d+")) {
-                        if (Integer.parseInt(v) > 0) {
+                        if (checkIfValidId(Integer.parseInt(v))) {
                             newBasektCount = Integer.parseInt(v);
                         } else {
                             System.out.println("Bitte geben Sie eine Zahl ein!");
@@ -798,5 +802,5 @@ public class Main {
 
 
 
-        }
+    }
 }
