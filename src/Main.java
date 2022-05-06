@@ -715,12 +715,68 @@ public class Main {
     }
 
     private static void editBasket(){
-        int artikelID;
         System.out.print("ID von Artikel den sie Bearbeiten möchten >>> ");
-        artikelID = sc.nextInt();
+        int idOfProduct = 0;
+        do {
+            System.out.print("Bitte geben Sie die ID-Nummer Ihres Artikels an oder abbrechen [q] >>> ");
+            String v = sc.nextLine();
+            if(v.toLowerCase().charAt(0) == 'q' ){
+                return;
+            }
+            if(v.matches("-?\\d+")){
+                if(checkIfValidId(Integer.parseInt(v))){
+                    idOfProduct = Integer.parseInt(v);
+                } else{
+                    System.out.println("Ungültige ID-Nummer!");
+                }
+            } else {
+                System.out.println("Bitte geben Sie eine Zahl ein!");
+            }
+        } while (!(idOfProduct > 0));
+        Article foundArticle = null;
         for (Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
-            if(){}
+            if(entry.getKey().getProductId() == idOfProduct) {
+                foundArticle = entry.getKey();
+                break;
+            }
+        }
+        String choice = "";
+        System.out.println("Artikel löschen [l]");
+        System.out.println("Anzahl ändern [c]");
+        System.out.println("Abbrechen [q]");
+        System.out.print(">>> ");
+
+        choice = sc.nextLine().toLowerCase();
+
+        switch (choice.charAt(0)) {
+            case 'q':
+                break;
+
+            case 'l':
+                currentUser.getBasket().removeBasketHashMapEntry(foundArticle);
+                break;
+
+            case 'c':
+                int newBasektCount = 0;
+                do {
+                    System.out.print("Neue Anzahl eingeben >>> ");
+                    String v = sc.nextLine();
+                    if (v.matches("-?\\d+")) {
+                        if (Integer.parseInt(v) > 0) {
+                            newBasektCount = Integer.parseInt(v);
+                        } else {
+                            System.out.println("Bitte geben Sie eine Zahl ein!");
+                        }
+                    }
+                } while (!(idOfProduct > 0));
+                currentUser.getBasket().updateHashMapEntry(foundArticle, newBasektCount);
+                break;
         }
 
-    }
+
+
+
+
+
+        }
 }
