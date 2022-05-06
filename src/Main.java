@@ -788,6 +788,8 @@ public class Main {
                     }
                 } while (!(idOfProduct > 0));
                 currentUser.getBasket().updateHashMapEntry(foundArticle, newBasektCount);
+
+                JsonWriter.writeObjectToJson(currentUser.getBasket(), Path.of("basket.json"));
                 break;
         }
 
