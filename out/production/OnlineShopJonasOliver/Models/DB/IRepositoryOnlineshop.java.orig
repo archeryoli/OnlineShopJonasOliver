@@ -16,11 +16,13 @@ public interface IRepositoryOnlineshop {
 
     boolean updateArticle(Article article) throws SQLException;
 
-<<<<<<< HEAD
     void insertArticle(Article article) throws SQLException;
 
-=======
+<<<<<<< HEAD
     List<Article> getAllArticles() throws SQLException;
->>>>>>> 3c658ed40241ba137bebef8601156b4b97076659
+
+=======
+     List<Article> getAllArticles() throws SQLException;
+>>>>>>> 07f921938f02921cd8e4a04383ddd6058b829202
 
 }

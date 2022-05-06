@@ -75,6 +75,10 @@ public class Main {
 
         }while (choice.charAt(0) != 'q');
         System.out.println("Danke für Ihren Besuch");
+
+
+
+
     }
 
     private static void editArticle() {
@@ -682,7 +686,11 @@ public class Main {
         return addressToAdd;
     }
 
+<<<<<<< HEAD
+    private static void checkStockAtCheckOut(){
+=======
     private static boolean checkStockAtCheckOut(){
+>>>>>>> 988740964fc638988d16e18041b15b8686e59a49
 
         List<Article> failedArticles = new ArrayList<Article>();
         boolean success = true;
@@ -696,7 +704,6 @@ public class Main {
                 }
             }
         }
-<<<<<<< HEAD
         System.out.println("Es wurde ein Fehler in Ihrer bestellung gefunden: ");
         Table t = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE);
         t.addCell("ID-Nummer");
@@ -713,8 +720,15 @@ public class Main {
         }
         System.out.println(t.render());
         return success;
-=======
-        System.out.println("Zu wenig auf Lager von>>> " + failedArticles);
->>>>>>> 97d9d49a89ca6ebdbdfb51dd12e06922e7605a7b
+    }
+
+    private static void editBasket(){
+        int artikelID;
+        System.out.print("ID von Artikel den sie Bearbeiten möchten >>> ");
+        artikelID = sc.nextInt();
+        for (Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+            if(){}
+        }
+
     }
 }
