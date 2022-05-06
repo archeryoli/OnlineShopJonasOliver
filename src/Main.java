@@ -9,9 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
-import com.google.gson.internal.bind.util.ISO8601Utils;
 import org.nocrala.tools.texttablefmt.*;
-import org.w3c.dom.ls.LSOutput;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
@@ -27,7 +25,7 @@ public class Main {
         // namen ändern für jedes produkt
         String choice = "";
 
-        init();
+        getAllArticles();
         System.out.println("Olineshop von Jonas und Oliver");
         System.out.println("==============================");
 
@@ -217,6 +215,7 @@ public class Main {
         }
         System.out.println(t.render());
     }
+
     private static boolean checkIfValidId(int idToCheck){
         for(Article a: listOfAllArticles){
             if(a.getProductId() == idToCheck){
@@ -472,6 +471,24 @@ public class Main {
         System.out.println(t.render());
         System.out.printf("Ihre Rechnung macht %.2f aus.\n\n", sumPrice);
 
+        try{
+            rep = new RepositoryOnlineshopDB();
+            rep.open();
+
+            for(Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+                Article updatedArticle = new Article(entry.getKey());
+                updatedArticle.setProductStockCount(updatedArticle.getProductStockCount() - entry.getValue());
+                rep.updateArticle(updatedArticle);
+            }
+
+            rep.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        getAllArticles();
         JsonWriter.writeObjectToJson(null, Path.of("basket.json"));
         currentUser.setBasket(new Basket());
     }
@@ -490,7 +507,8 @@ public class Main {
         System.out.print(">>> ");
     }
 
-    private static void init(){
+    private static void getAllArticles(){
+        listOfAllArticles = new ArrayList<>();
         try{
             rep = new RepositoryOnlineshopDB();
             rep.open();
@@ -684,7 +702,7 @@ public class Main {
 
     private static boolean checkStockAtCheckOut(){
 
-        List<Article> failedArticles = new ArrayList<Article>();
+        List<Article> failedArticles = new ArrayList<>();
         boolean success = true;
         for(Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
             for (Article a : listOfAllArticles){
