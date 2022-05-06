@@ -731,4 +731,14 @@ public class Main {
         System.out.println(t.render());
         return success;
     }
+
+    private static void editBasket(){
+        int artikelID;
+        System.out.print("ID von Artikel den sie Bearbeiten möchten >>> ");
+        artikelID = sc.nextInt();
+        for (Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+            if(){}
+        }
+
+    }
 }
