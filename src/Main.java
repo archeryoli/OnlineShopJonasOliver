@@ -225,6 +225,15 @@ public class Main {
         return false;
     }
 
+    private static boolean checkIfValidIdInBasket(int idToCheck){
+        for (Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+            if (entry.getKey().getProductId() == idToCheck){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static void searchByType() {
         System.out.print("Bitte geben Sie den zu suchenden Typ ein >>> ");
         String typeToLookFor = sc.nextLine();
@@ -744,7 +753,7 @@ public class Main {
                 return;
             }
             if(v.matches("-?\\d+")){
-                if(checkIfValidId(Integer.parseInt(v))){
+                if(checkIfValidIdInBasket(Integer.parseInt(v))){
                     idOfProduct = Integer.parseInt(v);
                 } else{
                     System.out.println("Ungültige ID-Nummer!");
@@ -784,11 +793,13 @@ public class Main {
                     System.out.print("Neue Anzahl eingeben >>> ");
                     String v = sc.nextLine();
                     if (v.matches("-?\\d+")) {
-                        if (checkIfValidId(Integer.parseInt(v))) {
+                        if (checkIfValidIdInBasket(Integer.parseInt(v))) {
                             newBasektCount = Integer.parseInt(v);
                         } else {
-                            System.out.println("Bitte geben Sie eine Zahl ein!");
+                            System.out.println("Ungültige Id!");
                         }
+                    } else {
+                        System.out.println("Bitte geben Sie eine Zahl ein!");
                     }
                 } while (!(idOfProduct > 0));
                 currentUser.getBasket().updateHashMapEntry(foundArticle, newBasektCount);
