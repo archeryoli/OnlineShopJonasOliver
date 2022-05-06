@@ -85,7 +85,7 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
     @Override
     public boolean updateArticle(Article article) throws SQLException {
 
-        CallableStatement stmt = this._connection.prepareCall("{call updateArticle(?, ?, ?, ?, ?, ?, ?)}");
+        CallableStatement stmt = this._connection.prepareCall("{call updateArticle(?, ?, ?, ?, ?, ?, ?}");
 
         stmt.setInt(1, article.getProductId());
         stmt.setString(2, article.getProductName());
@@ -99,6 +99,7 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
     }
 
     @Override
+<<<<<<< HEAD
     public void insertArticle(Article article) throws SQLException {
 
         PreparedStatement pStmt = this._connection.prepareStatement("insert into article values(null, ?, ?, ?, ?, ?, ?)");
@@ -170,9 +171,7 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
         pStmt.setInt(7, article.getProductStockCount());
 
         return article.getProductId();
-    }
-
-    @Override
+=======
     public List<Article> getAllArticles() throws SQLException {
         List<Article> foundArticles = new ArrayList<>();
         PreparedStatement stmt = this._connection.prepareCall("select * from article left join electronics using(articleId) left join clothing using(articleId) left join book using(articleId)");
@@ -193,14 +192,14 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
                 e.setElectronicsModel(rs.getString("electronicsModel"));
                 e.setElectronicsWattage(rs.getDouble("electronicsWattage"));
                 e.setElectronicsDimensions(rs.getString("electronicsDimensions"));
-                foundArticles.add(e);
+                System.out.println("Elek");
             } else if(rs.getString("clothingSize") != null){
                 Clothing c = new Clothing(a);
                 c.setClothingType(ClothingType.values()[rs.getInt("clothingType")]);
                 c.setClothingColor(rs.getString("clothingColor"));
                 c.setClothingSize(rs.getInt("clothingSize"));
                 c.setClothingFabric(rs.getString("clothingFabric"));
-                foundArticles.add(c);
+                System.out.println("Cloth");
             } else if(rs.getString("title") != null){
                 Book b = new Book(a);
                 b.setBookISBNR(rs.getString("bookISBNR"));
@@ -208,17 +207,15 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
                 b.setBookAuthor(rs.getString("bookAuthor"));
                 b.setBookPages(rs.getInt("bookPages"));
                 b.setBookPublisher(rs.getString("bookPublisher"));
-                foundArticles.add(b);
+                System.out.println("book");
+
             }
+            foundArticles.add(a);
             //asdf.setasdf(result.getDatenTyp("Label"));
         }
         return foundArticles;
+>>>>>>> 3c658ed40241ba137bebef8601156b4b97076659
     }
-
-
-
-
-
 
 
 }
