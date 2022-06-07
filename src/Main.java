@@ -807,11 +807,5 @@ public class Main {
                 JsonWriter.writeObjectToJson(currentUser.getBasket(), Path.of("basket.json"));
                 break;
         }
-
-
-
-
-
-
     }
 }
