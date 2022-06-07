@@ -20,9 +20,6 @@ public class Main {
     public static void main(String[] args) {
         // admin Email: admin@admin.com
         // admin Passwort: root
-        // admin kann StockCount für jedes Produkt erhöhen
-        // vielleicht produkte in datenbank abspeichern
-        // namen ändern für jedes produkt
         String choice = "";
 
         getAllArticles();
@@ -398,7 +395,7 @@ public class Main {
                 return;
             }
             if(v.matches("-?\\d+")){
-                 if(Integer.parseInt(v) > 0 ){
+                 if(Integer.parseInt(v) > 0){
                      amountOfProduct = Integer.parseInt(v);
                  } else{
                      System.out.println("Ungültige Anzahl!");
@@ -422,6 +419,7 @@ public class Main {
     }
 
     private static void showBasket(User currentUser) {
+        // Wenn der Basket leer ist
         if(currentUser.getBasket().equals(new Basket()) || currentUser.getBasket() == null){
             System.out.println("Hier gibt es nichts zu sehen ...\n");
             return;
@@ -487,7 +485,7 @@ public class Main {
             rep.open();
 
             for(Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
-                Article updatedArticle = new Article(entry.getKey());
+                Article updatedArticle = entry.getKey();
                 updatedArticle.setProductStockCount(updatedArticle.getProductStockCount() - entry.getValue());
                 rep.updateArticle(updatedArticle);
             }
@@ -525,7 +523,6 @@ public class Main {
             rep.open();
             for(Article a: rep.getAllArticles()){
                 listOfAllArticles.add(a);
-                System.out.println(a);
             }
             rep.close();
         } catch (ClassNotFoundException e) {
@@ -533,18 +530,6 @@ public class Main {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        /*listOfAllArticles.add(new Electronics(1, "Waschmaschine", 299.99, "Bosch", "Waschmaschine mit Anti-bügel Funktion", 150, 7, "XA6381", 950, "60x70x80"));
-        listOfAllArticles.add(new Electronics(2, "Gaming PC", 1585, "Hofer", "Gaming PC für tolle Bilder zum Arbeiten und gamen", 12, 3, "AMD1", 600, "25x60x50"));
-        listOfAllArticles.add(new Electronics(3, "Azer Bildschirm", 150.85, "Azer", "Curved Gaming PC mit 144Hz und 27'", 2, 25, "AZER1234", 30, "60x10x30"));
-
-        listOfAllArticles.add(new Clothing(4, "Sommershirt", 23.50, "Levis", "Shirt für warme Sommertage", 0.6, 2, ClothingType.TSHIRT, "rot", 162, "Baumwolle"));
-        listOfAllArticles.add(new Clothing(5, "Anzugsjeans", 65.90, "Tommy Jeans", "Für besondere Anlässe", 1.5, 5, ClothingType.JEANS, "schwarz", 36, "Baumwolle"));
-        listOfAllArticles.add(new Clothing(6, "Flip Flop", 15, "", "Flip Flops für den Urlaub", 0.1, 22, ClothingType.SHOE, "grau", 42, "Kunststoff"));
-
-        listOfAllArticles.add(new Book(7, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag"));
-        listOfAllArticles.add(new Book(8, "Die Räuber", 11, "", "Oida des woa lektüre. goa koan bock", 0.5, 9, "23456", "Die Räuber", "Schiller", 175, "Hamburger Buchverlag"));
-        listOfAllArticles.add(new Book(9, "Unter allem liegt die Angst", 19.90, "", "Sehr emotionales Buch welches über Rassismus im Alltag spricht", 0.4, 1, "354567", "Unter allem liegt die Angst", "Matthias Daxer", 200, "FreeVerlag.online"));
-    */
     }
 
     private static void showAllArticles(){
@@ -809,3 +794,6 @@ public class Main {
         }
     }
 }
+
+
+

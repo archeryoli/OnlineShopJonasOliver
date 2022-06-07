@@ -9,9 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
-import com.google.gson.internal.bind.util.ISO8601Utils;
 import org.nocrala.tools.texttablefmt.*;
-import org.w3c.dom.ls.LSOutput;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
@@ -22,12 +20,9 @@ public class Main {
     public static void main(String[] args) {
         // admin Email: admin@admin.com
         // admin Passwort: root
-        // admin kann StockCount für jedes Produkt erhöhen
-        // vielleicht produkte in datenbank abspeichern
-        // namen ändern für jedes produkt
         String choice = "";
 
-        init();
+        getAllArticles();
         System.out.println("Olineshop von Jonas und Oliver");
         System.out.println("==============================");
 
@@ -75,10 +70,6 @@ public class Main {
 
         }while (choice.charAt(0) != 'q');
         System.out.println("Danke für Ihren Besuch");
-
-
-
-
     }
 
     private static void editArticle() {
@@ -221,9 +212,19 @@ public class Main {
         }
         System.out.println(t.render());
     }
+
     private static boolean checkIfValidId(int idToCheck){
         for(Article a: listOfAllArticles){
             if(a.getProductId() == idToCheck){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkIfValidIdInBasket(int idToCheck){
+        for (Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+            if (entry.getKey().getProductId() == idToCheck){
                 return true;
             }
         }
@@ -394,7 +395,7 @@ public class Main {
                 return;
             }
             if(v.matches("-?\\d+")){
-                 if(Integer.parseInt(v) > 0 ){
+                 if(Integer.parseInt(v) > 0){
                      amountOfProduct = Integer.parseInt(v);
                  } else{
                      System.out.println("Ungültige Anzahl!");
@@ -418,6 +419,7 @@ public class Main {
     }
 
     private static void showBasket(User currentUser) {
+        // Wenn der Basket leer ist
         if(currentUser.getBasket().equals(new Basket()) || currentUser.getBasket() == null){
             System.out.println("Hier gibt es nichts zu sehen ...\n");
             return;
@@ -439,9 +441,9 @@ public class Main {
         }
         System.out.println(t.render());
 
-        System.out.print("\nWollen Sie die Gegenstände in Ihrem Warenkorb kaufen [j|n] >>> ");
+        System.out.print("\nKaufen | ändern | abbrechen [k|e|q] >>> ");
         String input = sc.nextLine();
-        if(input.toLowerCase().charAt(0) == 'j'){
+        if(input.toLowerCase().charAt(0) == 'k'){
             // Wenn es keine Probleme gibt
             if(checkStockAtCheckOut()){
                 System.out.println("Hier ist Ihre Rechnung:");
@@ -449,6 +451,8 @@ public class Main {
             } else {
                 System.out.println("Bitte kümmern Sie sich über Ihren Warenkorb!");
             }
+        } else if(input.toLowerCase().charAt(0) == 'e'){
+            editBasket();
         }
     }
 
@@ -476,6 +480,24 @@ public class Main {
         System.out.println(t.render());
         System.out.printf("Ihre Rechnung macht %.2f aus.\n\n", sumPrice);
 
+        try{
+            rep = new RepositoryOnlineshopDB();
+            rep.open();
+
+            for(Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
+                Article updatedArticle = entry.getKey();
+                updatedArticle.setProductStockCount(updatedArticle.getProductStockCount() - entry.getValue());
+                rep.updateArticle(updatedArticle);
+            }
+
+            rep.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        getAllArticles();
         JsonWriter.writeObjectToJson(null, Path.of("basket.json"));
         currentUser.setBasket(new Basket());
     }
@@ -494,13 +516,13 @@ public class Main {
         System.out.print(">>> ");
     }
 
-    private static void init(){
+    private static void getAllArticles(){
+        listOfAllArticles = new ArrayList<>();
         try{
             rep = new RepositoryOnlineshopDB();
             rep.open();
             for(Article a: rep.getAllArticles()){
                 listOfAllArticles.add(a);
-                System.out.println(a);
             }
             rep.close();
         } catch (ClassNotFoundException e) {
@@ -508,18 +530,6 @@ public class Main {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        /*listOfAllArticles.add(new Electronics(1, "Waschmaschine", 299.99, "Bosch", "Waschmaschine mit Anti-bügel Funktion", 150, 7, "XA6381", 950, "60x70x80"));
-        listOfAllArticles.add(new Electronics(2, "Gaming PC", 1585, "Hofer", "Gaming PC für tolle Bilder zum Arbeiten und gamen", 12, 3, "AMD1", 600, "25x60x50"));
-        listOfAllArticles.add(new Electronics(3, "Azer Bildschirm", 150.85, "Azer", "Curved Gaming PC mit 144Hz und 27'", 2, 25, "AZER1234", 30, "60x10x30"));
-
-        listOfAllArticles.add(new Clothing(4, "Sommershirt", 23.50, "Levis", "Shirt für warme Sommertage", 0.6, 2, ClothingType.TSHIRT, "rot", 162, "Baumwolle"));
-        listOfAllArticles.add(new Clothing(5, "Anzugsjeans", 65.90, "Tommy Jeans", "Für besondere Anlässe", 1.5, 5, ClothingType.JEANS, "schwarz", 36, "Baumwolle"));
-        listOfAllArticles.add(new Clothing(6, "Flip Flop", 15, "", "Flip Flops für den Urlaub", 0.1, 22, ClothingType.SHOE, "grau", 42, "Kunststoff"));
-
-        listOfAllArticles.add(new Book(7, "Harry Potter and the Order of Pheonix", 23.50, "", "Tolles Buch für Kinder wie Jonas", 0.5, 5, "123456", "Harry Potter and the Order of Pheonix", "J.K. Rowling", 690, "MusterVerlag"));
-        listOfAllArticles.add(new Book(8, "Die Räuber", 11, "", "Oida des woa lektüre. goa koan bock", 0.5, 9, "23456", "Die Räuber", "Schiller", 175, "Hamburger Buchverlag"));
-        listOfAllArticles.add(new Book(9, "Unter allem liegt die Angst", 19.90, "", "Sehr emotionales Buch welches über Rassismus im Alltag spricht", 0.4, 1, "354567", "Unter allem liegt die Angst", "Matthias Daxer", 200, "FreeVerlag.online"));
-    */
     }
 
     private static void showAllArticles(){
@@ -686,13 +696,9 @@ public class Main {
         return addressToAdd;
     }
 
-<<<<<<< HEAD
-    private static void checkStockAtCheckOut(){
-=======
     private static boolean checkStockAtCheckOut(){
->>>>>>> 988740964fc638988d16e18041b15b8686e59a49
 
-        List<Article> failedArticles = new ArrayList<Article>();
+        List<Article> failedArticles = new ArrayList<>();
         boolean success = true;
         for(Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
             for (Article a : listOfAllArticles){
@@ -723,12 +729,74 @@ public class Main {
     }
 
     private static void editBasket(){
-        int artikelID;
         System.out.print("ID von Artikel den sie Bearbeiten möchten >>> ");
-        artikelID = sc.nextInt();
+        int idOfProduct = 0;
+        do {
+            System.out.print("Bitte geben Sie die ID-Nummer Ihres Artikels an oder abbrechen [q] >>> ");
+            String v = sc.nextLine();
+            if(v.toLowerCase().charAt(0) == 'q' ){
+                return;
+            }
+            if(v.matches("-?\\d+")){
+                if(checkIfValidIdInBasket(Integer.parseInt(v))){
+                    idOfProduct = Integer.parseInt(v);
+                } else{
+                    System.out.println("Ungültige ID-Nummer!");
+                }
+            } else {
+                System.out.println("Bitte geben Sie eine Zahl ein!");
+            }
+        } while (!(idOfProduct > 0));
+        Article foundArticle = null;
         for (Map.Entry<Article, Integer> entry: currentUser.getBasket().getBasketHashMap().entrySet()){
-            if(){}
+            if(entry.getKey().getProductId() == idOfProduct) {
+                foundArticle = entry.getKey();
+                break;
+            }
         }
+        String choice = "";
+        System.out.println("Artikel löschen [l]");
+        System.out.println("Anzahl ändern [c]");
+        System.out.println("Abbrechen [q]");
+        System.out.print(">>> ");
 
+        choice = sc.nextLine().toLowerCase();
+
+        switch (choice.charAt(0)) {
+            case 'q':
+                break;
+
+            case 'l':
+                currentUser.getBasket().removeBasketHashMapEntry(foundArticle);
+                JsonWriter.writeObjectToJson(currentUser.getBasket(), Path.of("basket.json"));
+
+                break;
+
+            case 'c':
+                int newBasektCount = 0;
+                do {
+                    System.out.print("Neue Anzahl eingeben >>> ");
+                    String v = sc.nextLine();
+                    if (v.matches("-?\\d+")) {
+                        if (checkIfValidIdInBasket(Integer.parseInt(v))) {
+                            newBasektCount = Integer.parseInt(v);
+                        } else {
+                            System.out.println("Ungültige Id!");
+                        }
+                    } else {
+                        System.out.println("Bitte geben Sie eine Zahl ein!");
+                    }
+                } while (!(idOfProduct > 0));
+                currentUser.getBasket().updateHashMapEntry(foundArticle, newBasektCount);
+
+                JsonWriter.writeObjectToJson(currentUser.getBasket(), Path.of("basket.json"));
+                break;
+        }
     }
 }
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> f60b66d3f3ae5baf361557bfd7a3adec2495d3b7
