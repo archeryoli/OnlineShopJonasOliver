@@ -134,11 +134,6 @@ public class User {
         this._isAdmin = isAdmin;
     }
 
-    protected boolean canEqual(final Object other) {
-        return other instanceof User;
-    }
-
-
 
     public String toString() {
         return "User(_userId=" + this.getUserId() + ", _firstname=" + this.getFirstname() + ", _lastname=" + this.getLastname() + ", _birthdate=" + this.getBirthdate() + ", _gender=" + this.getGender() + ", _email=" + this.getEmail() + ", _addresses=" + this.getAddresses() + ", _basket=" + this.getBasket() + ")";

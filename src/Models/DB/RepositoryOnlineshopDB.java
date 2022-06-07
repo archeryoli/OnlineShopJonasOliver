@@ -98,65 +98,6 @@ public class RepositoryOnlineshopDB implements IRepositoryOnlineshop{
         return stmt.executeUpdate() == 1;
     }
 
-    @Override
-    public void insertArticle(Article article) throws SQLException {
-
-        PreparedStatement pStmt = this._connection.prepareStatement("insert into article values(null, ?, ?, ?, ?, ?, ?)");
-
-
-        pStmt.setString(1, article.getProductName());
-        pStmt.setDouble(2, article.getProductPrice());
-        pStmt.setString(3, article.getProductBrand());
-        pStmt.setString(4, article.getProductDescription());
-        pStmt.setDouble(5, article.getProductWeight());
-        pStmt.setInt(6, article.getProductStockCount());
-
-        if (article instanceof Clothing){
-            insertClothing((Clothing) article);
-        }
-        else if(article instanceof Electronics){
-            insertElectronics((Electronics) article);
-        }
-        else if(article instanceof Book){
-            insertBook((Book) article);
-        }
-
-
-
-    }
-
-    public void insertClothing(Clothing clothing) throws SQLException {
-
-        PreparedStatement pStmt = this._connection.prepareStatement("insert into clothing values(?, ?, ?, ?, ?)");
-
-        pStmt.setInt(1, getIdfromArticle(clothing));
-        pStmt.setInt(2, clothing.getClothingType().ordinal());
-        pStmt.setString(3, clothing.getClothingColor());
-        pStmt.setInt(4, clothing.getClothingSize());
-        pStmt.setString(5, clothing.getClothingFabric());
-    }
-
-
-    public void insertElectronics(Electronics electronics) throws SQLException {
-
-        PreparedStatement pStmt = this._connection.prepareStatement("insert into electronics values(?, ?, ?, ?)");
-
-        pStmt.setInt(1, getIdfromArticle(electronics));
-        pStmt.setString(2, electronics.getElectronicsModel());
-        pStmt.setDouble(3, electronics.getElectronicsWattage());
-        pStmt.setString(4, electronics.getElectronicsDimensions());
-    }
-
-
-    public void insertBook(Book book) throws SQLException {
-
-        PreparedStatement pStmt = this._connection.prepareStatement("insert into book values (?, ?, ?, ?, ?, ?)");
-
-        pStmt.setInt(1, getIdfromArticle(book));
-
-
-    }
-
     public int getIdfromArticle(Article article) throws SQLException {
 
         PreparedStatement pStmt = this._connection.prepareStatement("select ? from article where productName = ?, productPrice = ?, productBrand = ?, productDescription = ?, productWeight = ?, productDtockCount");
